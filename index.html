@@ -12,7 +12,7 @@
       color: #0f172a;
       line-height: 1.4;
     }
-    .container { max-width: 1380px; margin: 0 auto; }
+    .container { max-width: 1520px; margin: 0 auto; }
     header {
       background: #0f172a;
       color: #fff;
@@ -145,10 +145,21 @@
 
     .scroll { overflow-x: auto; padding-bottom: 8px; }
     .board {
-      min-width: 1020px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
       gap: 14px;
+      align-items: stretch;
+    }
+    .board.cols-5 {
+      min-width: 1180px;
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .board.cols-6 {
+      min-width: 1380px;
+      grid-template-columns: repeat(6, 1fr);
+    }
+    .col-wrap {
+      display: flex;
+      flex-direction: column;
     }
     .col-title {
       background: #0f172a;
@@ -161,7 +172,13 @@
       text-align: center;
       margin-bottom: 10px;
     }
-    .col-matches { display: flex; flex-direction: column; justify-content: space-around; gap: 8px; }
+    .col-matches {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 8px;
+    }
     .match {
       border: 1.5px solid #1e293b;
       border-radius: 5px;
@@ -176,6 +193,7 @@
       color: #334155;
       display: flex;
       justify-content: space-between;
+      gap: 4px;
     }
     .slot {
       display: flex;
@@ -202,16 +220,37 @@
       font-size: 11.5px;
     }
     .score-txt { font-weight: 800; min-width: 20px; text-align: center; }
+
+    .podium-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
     .qual-card {
       border: 2px solid #0f766e;
       background: #f0fdfa;
       border-radius: 6px;
-      padding: 12px;
+      padding: 10px 12px;
       text-align: center;
     }
+    .qual-card.gold {
+      border-color: #b45309;
+      background: #fffbeb;
+    }
+    .qual-card.silver {
+      border-color: #475569;
+      background: #f8fafc;
+    }
+    .qual-card.bronze {
+      border-color: #9a3412;
+      background: #fff7ed;
+    }
     .qual-lbl { font-size: 10.5px; font-weight: 800; color: #0f766e; text-transform: uppercase; }
-    .qual-name { font-size: 13.5px; font-weight: 800; margin-top: 4px; }
-    .qual-club { font-size: 11.5px; color: #475569; font-weight: 700; margin-top: 2px; }
+    .qual-card.gold .qual-lbl { color: #b45309; }
+    .qual-card.silver .qual-lbl { color: #334155; }
+    .qual-card.bronze .qual-lbl { color: #9a3412; }
+    .qual-name { font-size: 13px; font-weight: 800; margin-top: 4px; }
+    .qual-club { font-size: 11px; color: #475569; font-weight: 700; margin-top: 2px; }
 
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     th, td { border: 1px solid #cbd5e1; padding: 8px 10px; }
@@ -254,7 +293,7 @@
 
   <script>
     const PIN_CODE = "2026";
-    const ORDER = ["EDM15", "EHM15", "FDM15", "EDM11", "EHM11"];
+    const ORDER = ["EDM15", "EHM15", "FDM15", "EM11", "FM11"];
 
     const DATA = {
       EDM15: {
@@ -384,34 +423,85 @@
         ],
         scores: {}
       },
-      EDM11: {
-        id: "EDM11",
-        active: false,
+      EM11: {
+        id: "EM11",
+        active: true,
         size: 16,
-        tab: "Épée Dames M11",
-        epreuve: "Epée - Dames - M11",
-        tour: "Tableau éliminatoire",
+        tab: "Épée Mixte M11",
+        epreuve: "Epée - Mixte - M11",
+        tour: "Tableau de 16",
         club: "SCO ESCRIME",
         date: "21/11/2026",
         piste: "",
         arbitre: "",
-        seeds: {},
-        pairs16: [],
+        seeds: {
+          1: { n: 1, nom: "LAINÉ", prenom: "Louis", club: "NEUVILLE 72" },
+          2: { n: 2, nom: "LANCELOT", prenom: "Héloïse", club: "CHAT-GONTIER" },
+          3: { n: 3, nom: "METENIER PEREZ", prenom: "Mathias", club: "ANGERS CSAD" },
+          4: { n: 4, nom: "RACIC", prenom: "Madeleine", club: "ST HERBLAIN" },
+          5: { n: 5, nom: "ROSSI MORVAN", prenom: "Louis", club: "LORIENT SE" },
+          6: { n: 6, nom: "TOUCHARD", prenom: "Lucas", club: "ANGERS NDC" },
+          7: { n: 7, nom: "CHAMAYOU", prenom: "Hermance", club: "AURAY ESC" },
+          8: { n: 8, nom: "BOURDEAU PY", prenom: "Gabriel", club: "ANGERS NDC" },
+          9: { n: 9, nom: "DEGEE", prenom: "Axel", club: "CHAT-GONTIER" },
+          10: { n: 10, nom: "RAIMBERT", prenom: "Noah", club: "ANGERS CSAD" },
+          11: { n: 11, nom: "MOREUIL", prenom: "Iris", club: "NANTES CEN" },
+          12: { n: 12, nom: "DUTERTRE", prenom: "Capucine", club: "ANGERS CSAD" },
+          13: { n: 13, nom: "COTTEAU", prenom: "Henrik", club: "ANGERS CSAD" },
+          14: { n: 14, nom: "DESPLANQUES", prenom: "Arthur", club: "NEUVILLE 72" }
+        },
+        pairs16: [
+          [1, null, "a"], [9, 8, ""], [5, 12, ""], [13, 4, ""],
+          [3, 14, ""], [11, 6, ""], [7, 10, ""], [null, 2, "b"]
+        ],
         scores: {}
       },
-      EHM11: {
-        id: "EHM11",
-        active: false,
-        size: 16,
-        tab: "Épée Hommes M11",
-        epreuve: "Epée - Hommes - M11",
-        tour: "Tableau éliminatoire",
+      FM11: {
+        id: "FM11",
+        active: true,
+        size: 32,
+        tab: "Fleuret Mixte M11",
+        epreuve: "Fleuret - Mixte - M11",
+        tour: "Tableau de 32",
         club: "SCO ESCRIME",
         date: "21/11/2026",
         piste: "",
         arbitre: "",
-        seeds: {},
-        pairs16: [],
+        seeds: {
+          1: { n: 1, nom: "MORCEL", prenom: "Nandor", club: "VALLET" },
+          2: { n: 2, nom: "ENGELSPACH", prenom: "Andie", club: "LANNIONASPTT" },
+          3: { n: 3, nom: "HERVÉ-LE BRAS", prenom: "Owen", club: "QUIMPER EC" },
+          4: { n: 4, nom: "D'ORGEVAL", prenom: "Ambroise", club: "ST GILLES EV" },
+          5: { n: 5, nom: "JABNOUNI-PORTAIS", prenom: "Constant", club: "LOUE CM" },
+          6: { n: 6, nom: "HUBY", prenom: "Malone", club: "ST GILLES EV" },
+          7: { n: 7, nom: "JONCOUR", prenom: "Yuna", club: "ANGERS SCO" },
+          8: { n: 8, nom: "LE MARCHAND", prenom: "Rozenn", club: "RENNES ERM" },
+          9: { n: 9, nom: "BRETON", prenom: "Malone", club: "SABLE SARTHE" },
+          10: { n: 10, nom: "TISON", prenom: "Martin", club: "NANTES NEC" },
+          11: { n: 11, nom: "LELIEVRE", prenom: "Malo", club: "SABLE SARTHE" },
+          12: { n: 12, nom: "BONY", prenom: "Elouan", club: "SABLE SARTHE" },
+          13: { n: 13, nom: "COOMBES", prenom: "Iris", club: "VALLET" },
+          14: { n: 14, nom: "MARAIS FERRE", prenom: "Lyam", club: "SABLES OLONN" },
+          15: { n: 15, nom: "SORIN", prenom: "Lucien", club: "ST GILLES EV" },
+          16: { n: 16, nom: "AGUER", prenom: "Flavie", club: "VALLET" },
+          17: { n: 17, nom: "ACHKAR DE LA BASSETIÈRE", prenom: "Sixtine", club: "ANGERS SCO" },
+          18: { n: 18, nom: "PERRET", prenom: "Soan", club: "VALLET" },
+          19: { n: 19, nom: "TILLIE", prenom: "Etienne", club: "SABLE SARTHE" },
+          20: { n: 20, nom: "TILLIE", prenom: "Grégoire", club: "SABLE SARTHE" },
+          21: { n: 21, nom: "MILLE", prenom: "Alexis", club: "LOUE CM" },
+          22: { n: 22, nom: "GUÉRIN", prenom: "Jeanne", club: "MEUNG LOIRE" },
+          23: { n: 23, nom: "YAHYA BEY", prenom: "Ryad", club: "SABLES OLONN" },
+          24: { n: 24, nom: "RAPIN FORNASIER", prenom: "Athénaïs", club: "ANGERS SCO" },
+          25: { n: 25, nom: "LEFORT", prenom: "Madina", club: "VALLET" },
+          26: { n: 26, nom: "SOURINTHA", prenom: "Maé", club: "VALLET" },
+          27: { n: 27, nom: "MOALIC", prenom: "Bae", club: "VALLET" }
+        },
+        pairs32: [
+          [1, null, "a"], [17, 16, ""], [9, 24, ""], [25, 8, ""],
+          [5, null, "a"], [21, 12, ""], [13, 20, ""], [null, 4, "b"],
+          [3, null, "a"], [19, 14, ""], [11, 22, ""], [27, 6, ""],
+          [7, 26, ""], [23, 10, ""], [15, 18, ""], [null, 2, "b"]
+        ],
         scores: {}
       }
     };
@@ -492,26 +582,36 @@
       renderAll();
     }
 
-    function winnerOf(fA, fB, sA, sB, bye) {
-      if (bye === "a" && fA) return fA;
-      if (bye === "b" && fB) return fB;
-      if (sA === "" || sB === "") return null;
+    function outcomeOf(fA, fB, sA, sB, bye) {
+      if (bye === "a" && fA) return { win: fA, lose: null };
+      if (bye === "b" && fB) return { win: fB, lose: null };
+      if (sA === "" || sB === "") return { win: null, lose: null };
       const a = Number(sA);
       const b = Number(sB);
-      if (Number.isNaN(a) || Number.isNaN(b) || a === b) return null;
-      if (a > b && fA) return fA;
-      if (b > a && fB) return fB;
-      return null;
+      if (Number.isNaN(a) || Number.isNaN(b) || a === b) return { win: null, lose: null };
+      if (a > b && fA) return { win: fA, lose: fB || null };
+      if (b > a && fB) return { win: fB, lose: fA || null };
+      return { win: null, lose: null };
     }
 
     function buildRound(pairs, prefix, seeds, scores) {
-      return pairs.map(([rawA, rawB, bye], i) => {
+      return pairs.map(([rawA, rawB, bye, customLabel], i) => {
         const key = `${prefix}.${i + 1}`;
         const fA = typeof rawA === "number" ? seeds[rawA] : (rawA || null);
         const fB = typeof rawB === "number" ? seeds[rawB] : (rawB || null);
         const sc = scores[key] || { a: "", b: "" };
-        const win = winnerOf(fA, fB, sc.a, sc.b, bye || "");
-        return { key, fA, fB, a: sc.a ?? "", b: sc.b ?? "", win, bye: bye || "" };
+        const res = outcomeOf(fA, fB, sc.a, sc.b, bye || "");
+        return {
+          key,
+          label: customLabel || key,
+          fA,
+          fB,
+          a: sc.a ?? "",
+          b: sc.b ?? "",
+          win: res.win,
+          lose: res.lose,
+          bye: bye || ""
+        };
       });
     }
 
@@ -527,16 +627,25 @@
         const p4 = [];
         for (let i = 0; i < 4; i += 2) p4.push([r8[i].win, r8[i + 1].win, ""]);
         const r4 = buildRound(p4, "1-4", ev.seeds, ev.scores);
+
+        const finals = buildRound([
+          [r4[0].win, r4[1].win, "", "Finale (1-2)"],
+          [r4[0].lose, r4[1].lose, "", "Petite finale (3e place)"]
+        ], "FIN", ev.seeds, ev.scores);
+
         return {
           cols: [
             { title: "Tableau de 32", matches: r32 },
             { title: "Tableau de 16", matches: r16 },
-            { title: "Tableau de 8", matches: r8 }
+            { title: "Tableau de 8", matches: r8 },
+            { title: "Demi-finales", matches: r4 },
+            { title: "Finale & 3e place", matches: finals }
           ],
-          qualTitle: "Qualifiés Demi-finale",
-          qualList: r4.map(m => m.win).filter(Boolean),
-          qualCount: 4,
-          qualLabel: "Demi-finaliste"
+          podium: [
+            { rank: "1er — Vainqueur", cls: "gold", fencer: finals[0].win },
+            { rank: "2e — Finaliste", cls: "silver", fencer: finals[0].lose },
+            { rank: "3e place", cls: "bronze", fencer: finals[1].win }
+          ]
         };
       }
 
@@ -552,16 +661,23 @@
         [r8[2].win, r8[3].win, ""]
       ], "1-4", ev.seeds, ev.scores);
 
+      const finals = buildRound([
+        [r4[0].win, r4[1].win, "", "Finale (1-2)"],
+        [r4[0].lose, r4[1].lose, "", "Petite finale (3e place)"]
+      ], "FIN", ev.seeds, ev.scores);
+
       return {
         cols: [
           { title: "Tableau de 16", matches: r16 },
           { title: "Tableau de 8", matches: r8 },
-          { title: "Demi-finale", matches: r4 }
+          { title: "Demi-finales", matches: r4 },
+          { title: "Finale & 3e place", matches: finals }
         ],
-        qualTitle: "Qualifiées Finale",
-        qualList: r4.map(m => m.win).filter(Boolean),
-        qualCount: 2,
-        qualLabel: "Finaliste"
+        podium: [
+          { rank: "1er — Vainqueur", cls: "gold", fencer: finals[0].win },
+          { rank: "2e — Finaliste", cls: "silver", fencer: finals[0].lose },
+          { rank: "3e place", cls: "bronze", fencer: finals[1].win }
+        ]
       };
     }
 
@@ -608,9 +724,9 @@
       `;
     }
 
-    function slotHtml(f, score, side, isWin, hit, bye, matchKey) {
+    function slotHtml(f, score, side, isWin, hit, bye, matchKey, waitText) {
       if (!f && bye) return `<div class="slot bye"><span>Exempté</span></div>`;
-      if (!f) return `<div class="slot bye"><span>En attente du tour précédent</span></div>`;
+      if (!f) return `<div class="slot bye"><span>${waitText || "En attente du tour précédent"}</span></div>`;
       const id = `in-${currentTab}-${matchKey}-${side}`;
       const ctrl = editorUnlocked
         ? `<input id="${id}" class="score-in" type="number" min="0" max="15" value="${score}" oninput="setScore('${matchKey}','${side}',this.value)" />`
@@ -650,20 +766,24 @@
         return;
       }
 
-      const { cols, qualTitle, qualList, qualCount, qualLabel } = getRounds(ev);
+      const { cols, podium } = getRounds(ev);
+      const gridClass = cols.length === 5 ? "cols-6" : "cols-5";
 
       const colsHtml = cols.map(col => `
-        <div>
+        <div class="col-wrap">
           <div class="col-title">${col.title}</div>
           <div class="col-matches">
             ${col.matches.map(m => {
               const aWin = m.win && m.fA && m.win.n === m.fA.n;
               const bWin = m.win && m.fB && m.win.n === m.fB.n;
+              const isThirdPlace = m.key === "FIN.2";
+              const waitA = isThirdPlace ? "Perdant Demi-finale 1" : "En attente du tour précédent";
+              const waitB = isThirdPlace ? "Perdant Demi-finale 2" : "En attente du tour précédent";
               return `
                 <div class="match">
-                  <div class="match-head"><span>${m.key}</span><span>${m.win ? `Qualifié : ${m.win.nom}` : (m.bye ? "Direct" : "")}</span></div>
-                  ${slotHtml(m.fA, m.a, "a", aWin, isHit(m.fA, q), m.bye, m.key)}
-                  ${slotHtml(m.fB, m.b, "b", bWin, isHit(m.fB, q), m.bye, m.key)}
+                  <div class="match-head"><span>${m.label}</span><span>${m.win ? `Vainqueur : ${m.win.nom}` : (m.bye ? "Direct" : "")}</span></div>
+                  ${slotHtml(m.fA, m.a, "a", aWin, isHit(m.fA, q), m.bye, m.key, waitA)}
+                  ${slotHtml(m.fB, m.b, "b", bWin, isHit(m.fB, q), m.bye, m.key, waitB)}
                 </div>
               `;
             }).join("")}
@@ -671,19 +791,20 @@
         </div>
       `).join("");
 
-      const qualHtml = `
-        <div>
-          <div class="col-title">${qualTitle}</div>
+      const podiumHtml = `
+        <div class="col-wrap">
+          <div class="col-title">Podium</div>
           <div class="col-matches">
-            ${Array.from({ length: qualCount }).map((_, idx) => {
-              const f = qualList[idx];
-              return `
-                <div class="qual-card">
-                  <div class="qual-lbl">${qualLabel} ${idx + 1}</div>
-                  ${f ? `<div class="qual-name">${f.n}. ${f.nom} ${f.prenom}</div><div class="qual-club">${f.club}</div>` : `<div class="qual-club">À déterminer</div>`}
+            <div class="podium-stack">
+              ${podium.map(p => `
+                <div class="qual-card ${p.cls}">
+                  <div class="qual-lbl">${p.rank}</div>
+                  ${p.fencer
+                    ? `<div class="qual-name">${p.fencer.n}. ${p.fencer.nom} ${p.fencer.prenom}</div><div class="qual-club">${p.fencer.club}</div>`
+                    : `<div class="qual-club">À déterminer</div>`}
                 </div>
-              `;
-            }).join("")}
+              `).join("")}
+            </div>
           </div>
         </div>
       `;
@@ -698,14 +819,14 @@
             <div class="box">
               <div class="meta-row">Arbitre : <input type="text" value="${ev.arbitre}" ${editorUnlocked ? "" : "disabled"} oninput="DATA[currentTab].arbitre=this.value" /></div>
               <div class="center-title">${ev.epreuve}</div>
-              <div class="center-sub">${editorUnlocked ? "Saisie active (PIN)" : "Mode Spectateur (lecture seule)"}</div>
+              <div class="center-sub">${editorUnlocked ? "Saisie active (PIN) — qualification auto jusqu'à la finale et 3e place" : "Mode Spectateur (lecture seule)"}</div>
             </div>
             <div class="box">
               <div class="right-club">${ev.club}</div>
               <div class="right-date">${ev.date}</div>
             </div>
           </div>
-          <div class="scroll"><div class="board">${colsHtml}${qualHtml}</div></div>
+          <div class="scroll"><div class="board ${gridClass}">${colsHtml}${podiumHtml}</div></div>
         </article>
       `;
     }
