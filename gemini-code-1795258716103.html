@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scaramouche 2026 — Tableaux Éliminatoires</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #eef2f6;
+      color: #0f172a;
+      line-height: 1.4;
+    }
+    .container { max-width: 1360px; margin: 0 auto; }
+    header {
+      background: #0f172a;
+      color: #fff;
+      padding: 16px;
+      border-bottom: 4px solid #0f766e;
+    }
+    .header-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+    .kicker { font-size: 11.5px; font-weight: 800; color: #5eead4; text-transform: uppercase; }
+    .title { font-size: 21px; font-weight: 800; margin-top: 2px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .badge {
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: rgba(148, 163, 184, 0.22);
+      color: #e2e8f0;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+    }
+    .badge.editor {
+      background: rgba(20, 184, 166, 0.25);
+      color: #5eead4;
+      border-color: #2dd4bf;
+    }
+    button, .btn-label {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button:hover, .btn-label:hover { background: rgba(255, 255, 255, 0.2); }
+    .btn-pin { background: #0d9488; border-color: #2dd4bf; }
+
+    .tabs-bar { background: #1e293b; padding: 10px 16px; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tab-btn {
+      background: #0f172a;
+      color: #cbd5e1;
+      border: 1.5px solid #475569;
+      padding: 8px 15px;
+      border-radius: 7px;
+      font-size: 13.5px;
+      font-weight: 700;
+    }
+    .tab-btn.active {
+      background: #14b8a6;
+      color: #042f2e;
+      border-color: #14b8a6;
+    }
+
+    .toolbar {
+      background: #fff;
+      border-bottom: 1.5px solid #cbd5e1;
+      padding: 10px 16px;
+    }
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .sub-btn {
+      background: #f8fafc;
+      color: #0f172a;
+      border: 1.5px solid #1e293b;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+    .sub-btn.active { background: #0f172a; color: #fff; }
+    .search {
+      padding: 7px 12px;
+      border: 1.5px solid #94a3b8;
+      border-radius: 6px;
+      font-size: 13px;
+      min-width: 230px;
+    }
+
+    main { padding: 20px 16px 48px; }
+    .sheet {
+      background: #fff;
+      border: 2px solid #1e293b;
+      border-radius: 6px;
+      padding: 16px;
+    }
+    .sheet-top {
+      display: grid;
+      grid-template-columns: 1.2fr 1.5fr 1fr;
+      border: 1.5px solid #1e293b;
+      margin-bottom: 14px;
+    }
+    .box {
+      padding: 10px 12px;
+      border-right: 1.5px solid #1e293b;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .box:last-child { border-right: none; }
+    .tour-title { font-size: 20px; font-weight: 800; }
+    .center-title { font-size: 16px; font-weight: 800; text-align: center; }
+    .center-sub { font-size: 12.5px; color: #475569; font-weight: 700; text-align: center; }
+    .right-club { text-align: right; font-size: 13px; font-weight: 800; }
+    .right-date { text-align: right; font-size: 12px; color: #475569; font-weight: 600; }
+
+    .meta-row { display: flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; }
+    .meta-row input {
+      border: 1px solid #94a3b8;
+      border-radius: 4px;
+      padding: 3px 7px;
+      font-size: 12.5px;
+      font-weight: 700;
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    .meta-row input:disabled { background: #f1f5f9; border-color: transparent; }
+
+    .scroll { overflow-x: auto; padding-bottom: 8px; }
+    .board {
+      min-width: 1020px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .col-title {
+      background: #0f172a;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 7px 8px;
+      border-radius: 5px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .col-matches { display: flex; flex-direction: column; justify-content: space-around; gap: 8px; }
+    .match {
+      border: 1.5px solid #1e293b;
+      border-radius: 5px;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+    .match-head {
+      background: #e2e8f0;
+      padding: 2px 7px;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+    }
+    .slot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 5px 7px;
+      background: #fff;
+      border-top: 1px solid #cbd5e1;
+      font-size: 11.5px;
+    }
+    .slot.win { background: #dcfce7; }
+    .slot.bye { background: #f8fafc; color: #64748b; font-style: italic; }
+    .slot.hit { background: #fef9c3 !important; }
+    .fencer-name { font-weight: 800; }
+    .fencer-club { display: block; font-size: 10px; color: #64748b; }
+    .score-in {
+      width: 40px;
+      height: 22px;
+      text-align: center;
+      border: 1.5px solid #64748b;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 11.5px;
+    }
+    .score-txt { font-weight: 800; min-width: 20px; text-align: center; }
+    .qual-card {
+      border: 2px solid #0f766e;
+      background: #f0fdfa;
+      border-radius: 6px;
+      padding: 12px;
+      text-align: center;
+    }
+    .qual-lbl { font-size: 10.5px; font-weight: 800; color: #0f766e; text-transform: uppercase; }
+    .qual-name { font-size: 13.5px; font-weight: 800; margin-top: 4px; }
+    .qual-club { font-size: 11.5px; color: #475569; font-weight: 700; margin-top: 2px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { border: 1px solid #cbd5e1; padding: 8px 10px; }
+    th { background: #f1f5f9; text-align: left; font-size: 11.5px; text-transform: uppercase; }
+    td.num, th.num { text-align: center; }
+
+    @media (max-width: 740px) {
+      .sheet-top { grid-template-columns: 1fr; }
+      .box { border-right: none; border-bottom: 1.5px solid #1e293b; }
+      .box:last-child { border-bottom: none; }
+      .right-club, .right-date { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container header-row">
+      <div>
+        <div class="kicker">scaramouche2026 • SCO ESCRIME • 21/11/2026</div>
+        <div class="title">Scaramouche 2026 — Tableaux Éliminatoires</div>
+      </div>
+      <div class="actions" id="actionsBar"></div>
+    </div>
+  </header>
+
+  <div class="tabs-bar">
+    <div class="container tabs" id="tabsBar"></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="container toolbar-row">
+      <div id="subBar"></div>
+      <input type="text" id="searchBox" class="search" placeholder="Rechercher tireur/tireuse ou club..." oninput="onSearch(this.value)" />
+    </div>
+  </div>
+
+  <main>
+    <div class="container" id="contentArea"></div>
+  </main>
+
+  <script>
+    const PIN_CODE = "2026";
+    const ORDER = ["EDM15", "EHM15", "FDM15", "EDM11", "EHM11"];
+
+    const DATA = {
+      EDM15: {
+        id: "EDM15",
+        active: true,
+        size: 32,
+        tab: "Épée Dames M15",
+        epreuve: "Epée - Dames - M15",
+        tour: "Tableau de 32",
+        club: "SCO ESCRIME",
+        date: "21/11/2026",
+        piste: "",
+        arbitre: "",
+        seeds: {
+          1: { n: 1, nom: "EON", prenom: "Alwena", club: "JA ST MALO" },
+          2: { n: 2, nom: "SALMON RADENAC", prenom: "Romane", club: "LORIENT SE" },
+          3: { n: 3, nom: "CHAMAYOU", prenom: "Domitille", club: "AURAY ESC" },
+          4: { n: 4, nom: "POUCH", prenom: "Zoe", club: "QUIMPER EC" },
+          5: { n: 5, nom: "QUENON", prenom: "Chloé", club: "JA ST MALO" },
+          6: { n: 6, nom: "LOUSTAUNAU", prenom: "Raphaëlle", club: "ANGERS SCO" },
+          7: { n: 7, nom: "VALOIS", prenom: "Isalys", club: "NIORT CE" },
+          8: { n: 8, nom: "BERNARD", prenom: "Alizee", club: "SABLES OLONN" },
+          9: { n: 9, nom: "SAULNIER", prenom: "Emma", club: "NANTES CEN" },
+          10: { n: 10, nom: "BERNARD", prenom: "Cecile", club: "RENNES CSG" },
+          11: { n: 11, nom: "FOULON-LIVET", prenom: "Clarisse", club: "LAVAL CE" },
+          12: { n: 12, nom: "LE COURTOIS BÉZIER", prenom: "Victoire", club: "LAVAL CE" },
+          13: { n: 13, nom: "BOLLENGIER-STRAGIER", prenom: "Elise", club: "NEUVILLE 72" },
+          14: { n: 14, nom: "PONIN", prenom: "Noélia", club: "JA ST MALO" },
+          15: { n: 15, nom: "GASTE", prenom: "Clara", club: "ANGERS SCO" },
+          16: { n: 16, nom: "DIAKITE", prenom: "Maryam", club: "NANTES CEN" },
+          17: { n: 17, nom: "LOORIUS", prenom: "Yanna", club: "LOUDEAC" },
+          18: { n: 18, nom: "ROCHEREAU", prenom: "Inès", club: "NANTES CEN" },
+          19: { n: 19, nom: "MOREAU", prenom: "Mélia", club: "NEUVILLE 72" },
+          20: { n: 20, nom: "LIOTHAUD", prenom: "Valentine", club: "ANGERS SCO" },
+          21: { n: 21, nom: "GERARD", prenom: "Valentine", club: "ANGERS CSAD" }
+        },
+        pairs32: [
+          [1, null, "a"], [17, 16, ""], [9, null, "a"], [null, 8, "b"],
+          [5, null, "a"], [21, 12, ""], [13, 20, ""], [null, 4, "b"],
+          [3, null, "a"], [19, 14, ""], [11, null, "a"], [null, 6, "b"],
+          [7, null, "a"], [null, 10, "b"], [15, 18, ""], [null, 2, "b"]
+        ],
+        scores: {}
+      },
+      EHM15: {
+        id: "EHM15",
+        active: true,
+        size: 32,
+        tab: "Épée Hommes M15",
+        epreuve: "Epée - Hommes - M15",
+        tour: "Tableau de 32",
+        club: "SCO ESCRIME",
+        date: "21/11/2026",
+        piste: "",
+        arbitre: "",
+        seeds: {
+          1: { n: 1, nom: "BUNNENS", prenom: "Teddy", club: "ANGERS SCO" },
+          2: { n: 2, nom: "REBY", prenom: "Adrien", club: "VALLET" },
+          3: { n: 3, nom: "LE ROUX", prenom: "Lenny", club: "VALLET" },
+          4: { n: 4, nom: "BENOIST DEFRADE", prenom: "Camille", club: "LORIENT SE" },
+          5: { n: 5, nom: "BLACHIER BECHEZ", prenom: "Augustin", club: "VALLET" },
+          6: { n: 6, nom: "MAILLOT", prenom: "Louis", club: "ANGERS CSAD" },
+          7: { n: 7, nom: "VIMEUX", prenom: "Théo", club: "JA ST MALO" },
+          8: { n: 8, nom: "BILLEROT", prenom: "Axel", club: "NIORT CE" },
+          9: { n: 9, nom: "LE CALVEZ", prenom: "Paul", club: "RENNES CSG" },
+          10: { n: 10, nom: "ANTOUNE", prenom: "Gibran", club: "NEUVILLE 72" },
+          11: { n: 11, nom: "FOULARD", prenom: "Yanis", club: "NEUVILLE 72" },
+          12: { n: 12, nom: "ROSSI MORVAN", prenom: "Gabriel", club: "LORIENT SE" },
+          13: { n: 13, nom: "LANDRON", prenom: "Rudy", club: "ANGERS CSAD" },
+          14: { n: 14, nom: "MERAND", prenom: "Louis", club: "LA FLECHE" },
+          15: { n: 15, nom: "ROUX", prenom: "Jean", club: "JA ST MALO" },
+          16: { n: 16, nom: "BOUREE", prenom: "Lucas", club: "JA ST MALO" },
+          17: { n: 17, nom: "CHEVAL", prenom: "Arthur", club: "ANGERS CSAD" },
+          18: { n: 18, nom: "LE FOLL", prenom: "Noe", club: "NANTES CEN" },
+          19: { n: 19, nom: "VIDAL-JAFFRE", prenom: "Aaron", club: "LORIENT SE" },
+          20: { n: 20, nom: "GOURDIN", prenom: "Arthur", club: "JA ST MALO" },
+          21: { n: 21, nom: "CODDEVILLE", prenom: "Robin", club: "JA ST MALO" },
+          22: { n: 22, nom: "FRESSANCOURT", prenom: "Matéo", club: "ANGERS SCO" },
+          23: { n: 23, nom: "DUFEIL", prenom: "Côme", club: "JA ST MALO" },
+          24: { n: 24, nom: "PIRON", prenom: "Raphaël", club: "ST DOULCHARD" },
+          25: { n: 25, nom: "GIRARD", prenom: "Jules", club: "ANGERS SCO" },
+          26: { n: 26, nom: "MICHAUD LIPOVAC", prenom: "Oswald", club: "JA ST MALO" },
+          27: { n: 27, nom: "GAUTHIER", prenom: "Magnus", club: "VENDOME" },
+          28: { n: 28, nom: "LEROY", prenom: "Malo", club: "SABLE SARTHE" },
+          29: { n: 29, nom: "YSTE", prenom: "Jocelyn", club: "LORIENT SE" },
+          30: { n: 30, nom: "BEURY", prenom: "Maxence", club: "LA FLECHE" },
+          31: { n: 31, nom: "CHERASSE", prenom: "Amaury", club: "JA ST MALO" }
+        },
+        pairs32: [
+          [1, null, "a"], [17, 16, ""], [9, 24, ""], [25, 8, ""],
+          [5, 28, ""], [21, 12, ""], [13, 20, ""], [29, 4, ""],
+          [3, 30, ""], [19, 14, ""], [11, 22, ""], [27, 6, ""],
+          [7, 26, ""], [23, 10, ""], [15, 18, ""], [31, 2, ""]
+        ],
+        scores: {}
+      },
+      FDM15: {
+        id: "FDM15",
+        active: true,
+        size: 16,
+        tab: "Fleuret Dames M15",
+        epreuve: "Fleuret - Dames - M15",
+        tour: "Tableau de 16",
+        club: "SCO ESCRIME",
+        date: "21/11/2026",
+        piste: "",
+        arbitre: "",
+        seeds: {
+          1: { n: 1, nom: "BACHELOT", prenom: "Blanche", club: "SABLE SARTHE" },
+          2: { n: 2, nom: "DION-DOMENEGHINI", prenom: "Olga", club: "VALLET" },
+          3: { n: 3, nom: "BAUMIER", prenom: "Margaux", club: "SABLE SARTHE" },
+          4: { n: 4, nom: "DEMEOCQ", prenom: "Alice", club: "POITIERS" },
+          5: { n: 5, nom: "KERDREUX", prenom: "Alannah", club: "NANTES NEC" },
+          6: { n: 6, nom: "JUILLARD", prenom: "Auxane", club: "SAT TOURS" },
+          7: { n: 7, nom: "MANJOIN", prenom: "Zélie", club: "POITIERS" },
+          8: { n: 8, nom: "SANTONA", prenom: "Louise", club: "SAT TOURS" },
+          9: { n: 9, nom: "KOWALSKI", prenom: "Maélyna", club: "ST GILLES EV" },
+          10: { n: 10, nom: "RABEC", prenom: "Mathilde", club: "RENNES ERM" },
+          11: { n: 11, nom: "THIRION", prenom: "Zélie", club: "ANGERS SCO" },
+          12: { n: 12, nom: "CHANTEAU", prenom: "Valentine", club: "LOUE CM" },
+          13: { n: 13, nom: "BIENVENU", prenom: "Clara", club: "NANTES NEC" },
+          14: { n: 14, nom: "COLONNA-CESARI", prenom: "Bianca", club: "SAT TOURS" }
+        },
+        pairs16: [
+          [1, null, "a"], [9, 8, ""], [5, 12, ""], [13, 4, ""],
+          [3, 14, ""], [11, 6, ""], [7, 10, ""], [null, 2, "b"]
+        ],
+        scores: {}
+      },
+      EDM11: {
+        id: "EDM11",
+        active: false,
+        size: 16,
+        tab: "Épée Dames M11",
+        epreuve: "Epée - Dames - M11",
+        tour: "Tableau éliminatoire",
+        club: "SCO ESCRIME",
+        date: "21/11/2026",
+        piste: "",
+        arbitre: "",
+        seeds: {},
+        pairs16: [],
+        scores: {}
+      },
+      EHM11: {
+        id: "EHM11",
+        active: false,
+        size: 16,
+        tab: "Épée Hommes M11",
+        epreuve: "Epée - Hommes - M11",
+        tour: "Tableau éliminatoire",
+        club: "SCO ESCRIME",
+        date: "21/11/2026",
+        piste: "",
+        arbitre: "",
+        seeds: {},
+        pairs16: [],
+        scores: {}
+      }
+    };
+
+    let editorUnlocked = false;
+    let currentTab = "EDM15";
+    let currentView = "bracket";
+    let queryText = "";
+
+    function applyImportedObject(parsed) {
+      if (!parsed || typeof parsed !== "object") return false;
+      let matched = false;
+      ORDER.forEach(k => {
+        if (parsed[k] && typeof parsed[k] === "object") {
+          matched = true;
+          DATA[k].piste = typeof parsed[k].piste === "string" ? parsed[k].piste : "";
+          DATA[k].arbitre = typeof parsed[k].arbitre === "string" ? parsed[k].arbitre : "";
+          DATA[k].scores = parsed[k].scores && typeof parsed[k].scores === "object" ? parsed[k].scores : {};
+          if (parsed[k].seeds && typeof parsed[k].seeds === "object" && Object.keys(parsed[k].seeds).length > 0) {
+            DATA[k].seeds = parsed[k].seeds;
+            DATA[k].active = true;
+          }
+          if (Array.isArray(parsed[k].pairs32) && parsed[k].pairs32.length > 0) {
+            DATA[k].pairs32 = parsed[k].pairs32;
+          }
+          if (Array.isArray(parsed[k].pairs16) && parsed[k].pairs16.length > 0) {
+            DATA[k].pairs16 = parsed[k].pairs16;
+          }
+        }
+      });
+      if (matched && (!DATA[currentTab] || !DATA[currentTab].active)) {
+        const firstActive = ORDER.find(k => DATA[k] && DATA[k].active);
+        if (firstActive) currentTab = firstActive;
+      }
+      return matched;
+    }
+
+    function fetchPublishedJson(showMsg) {
+      if (typeof fetch !== "function") return;
+      fetch("./resultats.json?t=" + Date.now(), { cache: "no-store" })
+        .then(res => {
+          if (!res.ok) {
+            if (showMsg) alert("Le fichier resultats.json n'est pas encore présent sur le serveur.");
+            return null;
+          }
+          return res.json();
+        })
+        .then(parsed => {
+          if (!parsed) return;
+          if (applyImportedObject(parsed)) {
+            renderAll();
+            if (showMsg) alert("Résultats chargés depuis resultats.json.");
+          } else if (showMsg) {
+            alert("Le fichier resultats.json est vide ou ne contient pas les clés attendues.");
+          }
+        })
+        .catch(() => {
+          if (showMsg) alert("Impossible de charger resultats.json.");
+        });
+    }
+
+    function askPin() {
+      const val = prompt("Code PIN pour activer la saisie :");
+      if (val === null) return;
+      if (val.trim() === PIN_CODE) {
+        editorUnlocked = true;
+        renderAll();
+      } else {
+        alert("Code PIN incorrect.");
+      }
+    }
+
+    function lockPin() {
+      editorUnlocked = false;
+      renderAll();
+    }
+
+    function winnerOf(fA, fB, sA, sB, bye) {
+      if (bye === "a" && fA) return fA;
+      if (bye === "b" && fB) return fB;
+      if (sA === "" || sB === "") return null;
+      const a = Number(sA);
+      const b = Number(sB);
+      if (Number.isNaN(a) || Number.isNaN(b) || a === b) return null;
+      if (a > b && fA) return fA;
+      if (b > a && fB) return fB;
+      return null;
+    }
+
+    function buildRound(pairs, prefix, seeds, scores) {
+      return pairs.map(([rawA, rawB, bye], i) => {
+        const key = `${prefix}.${i + 1}`; const fA = typeof rawA === "number" ? seeds[rawA] : (rawA \vert{}\vert{} null); const fB = typeof rawB === "number" ? seeds[rawB] : (rawB \vert{}\vert{} null); const sc = scores[key] \vert{}\vert{} { a: "", b: "" }; const win = winnerOf(fA, fB, sc.a, sc.b, bye \vert{}\vert{} ""); return { key, fA, fB, a: sc.a ?? "", b: sc.b ?? "", win, bye: bye \vert{}\vert{} "" }; }); }  function getRounds(ev) { if (ev.size === 32) { const r32 = buildRound(ev.pairs32, "1-32", ev.seeds, ev.scores); const p16 = []; for (let i = 0; i < 16; i += 2) p16.push([r32[i].win, r32[i + 1].win, ""]); const r16 = buildRound(p16, "1-16", ev.seeds, ev.scores); const p8 = []; for (let i = 0; i < 8; i += 2) p8.push([r16[i].win, r16[i + 1].win, ""]); const r8 = buildRound(p8, "1-8", ev.seeds, ev.scores); const p4 = []; for (let i = 0; i < 4; i += 2) p4.push([r8[i].win, r8[i + 1].win, ""]); const r4 = buildRound(p4, "1-4", ev.seeds, ev.scores); return { cols: [ { title: "Tableau de 32", matches: r32 }, { title: "Tableau de 16", matches: r16 }, { title: "Tableau de 8", matches: r8 } ], qualTitle: "Qualifiés Demi-finale", qualList: r4.map(m => m.win).filter(Boolean), qualCount: 4, qualLabel: "Demi-finaliste" }; }  const r16 = buildRound(ev.pairs16, "1-16", ev.seeds, ev.scores); const r8 = buildRound([ [r16[0].win, r16[1].win, ""], [r16[2].win, r16[3].win, ""], [r16[4].win, r16[5].win, ""], [r16[6].win, r16[7].win, ""] ], "1-8", ev.seeds, ev.scores); const r4 = buildRound([ [r8[0].win, r8[1].win, ""], [r8[2].win, r8[3].win, ""] ], "1-4", ev.seeds, ev.scores);  return { cols: [ { title: "Tableau de 16", matches: r16 }, { title: "Tableau de 8", matches: r8 }, { title: "Demi-finale", matches: r4 } ], qualTitle: "Qualifiées Finale", qualList: r4.map(m => m.win).filter(Boolean), qualCount: 2, qualLabel: "Finaliste" }; }  function isHit(f, q) { if (!q \vert{}\vert{} !f) return false; return `${f.nom} ${f.prenom}${f.club}`.toLowerCase().includes(q);
+    }
+
+    function renderActions() {
+      const el = document.getElementById("actionsBar");
+      if (!editorUnlocked) {
+        el.innerHTML = `
+          <span class="badge">Mode Spectateur (lecture seule)</span>
+          <button onclick="fetchPublishedJson(true)">Actualiser en ligne</button>
+          <button onclick="window.print()">Imprimer</button>
+          <button class="btn-pin" onclick="askPin()">Mode Saisie (PIN)</button>
+        `;
+      } else {
+        el.innerHTML = `
+          <span class="badge editor">Mode Saisie actif</span>
+          <button onclick="fetchPublishedJson(true)">Charger resultats.json (en ligne)</button>
+          <button onclick="exportJson()">Exporter JSON</button>
+          <label class="btn-label">Importer JSON local <input type="file" accept=".json" style="display:none" onchange="importJson(event)" /></label>
+          <button onclick="lockPin()">Verrouiller</button>
+        `;
+      }
+    }
+
+    function renderTabs() {
+      const el = document.getElementById("tabsBar");
+      el.innerHTML = ORDER
+        .map(id => DATA[id])
+        .filter(ev => ev && ev.active)
+        .map(ev => `<button class="tab-btn ${ev.id === currentTab ? "active" : ""}" onclick="switchTab('${ev.id}')">${ev.tab}</button>`)
+        .join("");
+    }
+
+    function renderSub() {
+      const ev = DATA[currentTab];
+      const nb = Object.keys(ev.seeds).length;
+      document.getElementById("subBar").innerHTML = `
+        <button class="sub-btn ${currentView === "bracket" ? "active" : ""}" onclick="switchView('bracket')">Tableau éliminatoire</button>
+        <button class="sub-btn ${currentView === "list" ? "active" : ""}" onclick="switchView('list')">Participants (${nb})</button>
+      `;
+    }
+
+    function slotHtml(f, score, side, isWin, hit, bye, matchKey) {
+      if (!f && bye) return `<div class="slot bye"><span>Exempté</span></div>`;
+      if (!f) return `<div class="slot bye"><span>En attente du tour précédent</span></div>`;
+      const id = `in-${currentTab}-${matchKey}-${side}`;
+      const ctrl = editorUnlocked
+        ? `<input id="${id}" class="score-in" type="number" min="0" max="15" value="${score}" oninput="setScore('${matchKey}','${side}',this.value)" />`
+        : `<span class="score-txt">${score !== "" ? score : "·"}</span>`;
+      return `
+        <div class="slot ${isWin ? "win" : ""} ${hit ? "hit" : ""}">
+          <div>
+            <span class="fencer-name">${f.n}. ${f.nom}${f.prenom}</span>
+            <span class="fencer-club">${f.club}</span>
+          </div>
+          ${ctrl}
+        </div>
+      `;
+    }
+
+    function renderContent() {
+      const ev = DATA[currentTab];
+      const q = queryText.trim().toLowerCase();
+      const area = document.getElementById("contentArea");
+
+      if (currentView === "list") {
+        const rows = Object.values(ev.seeds)
+          .sort((a, b) => a.n - b.n)
+          .filter(f => !q || isHit(f, q))
+          .map(f => `<tr><td class="num"><strong>${f.n}</strong></td><td><strong>${f.nom}</strong> ${f.prenom}</td><td>${f.club}</td></tr>`)
+          .join("");
+        area.innerHTML = `
+          <article class="sheet">
+            <div class="sheet-top">
+              <div class="box"><div class="tour-title">${ev.tour}</div></div>
+              <div class="box"><div class="center-title">${ev.epreuve}</div><div class="center-sub">Liste des inscrits</div></div>
+              <div class="box"><div class="right-club">${ev.club}</div><div class="right-date">${ev.date}</div></div>
+            </div>
+            <table><thead><tr><th class="num">N°</th><th>Tireur / Tireuse</th><th>Club</th></tr></thead><tbody>${rows}</tbody></table>
+          </article>
+        `;
+        return;
+      }
+
+      const { cols, qualTitle, qualList, qualCount, qualLabel } = getRounds(ev);
+
+      const colsHtml = cols.map(col => `
+        <div>
+          <div class="col-title">${col.title}</div>
+          <div class="col-matches">
+            ${col.matches.map(m => {
+              const aWin = m.win && m.fA && m.win.n === m.fA.n;
+              const bWin = m.win && m.fB && m.win.n === m.fB.n;
+              return `
+                <div class="match">
+                  <div class="match-head"><span>${m.key}</span><span>${m.win ? `Qualifié : ${m.win.nom}` : (m.bye ? "Direct" : "")}</span></div>
+                  ${slotHtml(m.fA, m.a, "a", aWin, isHit(m.fA, q), m.bye, m.key)}
+                  ${slotHtml(m.fB, m.b, "b", bWin, isHit(m.fB, q), m.bye, m.key)}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `).join("");
+
+      const qualHtml = `
+        <div>
+          <div class="col-title">${qualTitle}</div>
+          <div class="col-matches">
+            ${Array.from({ length: qualCount }).map((_, idx) => {
+              const f = qualList[idx];
+              return `
+                <div class="qual-card">
+                  <div class="qual-lbl">${qualLabel} ${idx + 1}</div>
+                  ${f ? `<div class="qual-name">${f.n}. ${f.nom}${f.prenom}</div><div class="qual-club">${f.club}</div>` : `<div class="qual-club">À déterminer</div>`}
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+      `;
+
+      area.innerHTML = `
+        <article class="sheet">
+          <div class="sheet-top">
+            <div class="box">
+              <div class="tour-title">${ev.tour}</div>
+              <div class="meta-row">Piste : <input type="text" value="${ev.piste}" ${editorUnlocked ? "" : "disabled"} oninput="DATA[currentTab].piste=this.value" /></div>
+            </div>
+            <div class="box">
+              <div class="meta-row">Arbitre : <input type="text" value="${ev.arbitre}" ${editorUnlocked ? "" : "disabled"} oninput="DATA[currentTab].arbitre=this.value" /></div>
+              <div class="center-title">${ev.epreuve}</div>
+              <div class="center-sub">${editorUnlocked ? "Saisie active (PIN)" : "Mode Spectateur (lecture seule)"}</div>
+            </div>
+            <div class="box">
+              <div class="right-club">${ev.club}</div>
+              <div class="right-date
