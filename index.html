@@ -75,6 +75,26 @@
       align-items: center;
     }
 
+    .mode-badge {
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .mode-badge.viewer {
+      background: rgba(148, 163, 184, 0.22);
+      color: #e2e8f0;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+    }
+
+    .mode-badge.editor {
+      background: rgba(20, 184, 166, 0.25);
+      color: #5eead4;
+      border: 1px solid #2dd4bf;
+    }
+
     .btn-ghost {
       background: rgba(255, 255, 255, 0.1);
       color: #ffffff;
@@ -88,6 +108,16 @@
 
     .btn-ghost:hover {
       background: rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-unlock {
+      background: #0d9488;
+      border-color: #2dd4bf;
+      color: #ffffff;
+    }
+
+    .btn-unlock:hover {
+      background: #0f766e;
     }
 
     .btn-danger {
@@ -239,12 +269,25 @@
       background: #f8fafc;
     }
 
+    .inline-field input:disabled {
+      background: #f1f5f9;
+      color: var(--ink);
+      border-color: transparent;
+      padding-left: 2px;
+    }
+
     .inline-field input.piste-input {
       width: 56px;
       text-align: center;
       background: var(--accent-soft);
       border-color: var(--accent);
       color: var(--accent);
+    }
+
+    .inline-field input.piste-input:disabled {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      padding-left: 4px;
     }
 
     .inline-field input.ref-input {
@@ -469,6 +512,20 @@
       background: #ffffff;
     }
 
+    .score-zone input[type="number"]:disabled {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: var(--ink);
+    }
+
+    .score-read {
+      min-width: 24px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 12.5px;
+      color: var(--ink);
+    }
+
     .prio-btn {
       font-size: 10px;
       font-weight: 800;
@@ -478,6 +535,11 @@
       background: #e2e8f0;
       color: #334155;
       cursor: pointer;
+    }
+
+    .prio-btn:disabled {
+      cursor: default;
+      opacity: 0.85;
     }
 
     .prio-btn.active {
@@ -572,15 +634,7 @@
         <div class="kicker">scaramouche2026 • SCO ESCRIME • 21/11/2026 • Poules Tour n°1</div>
         <div class="app-title">Scaramouche 2026 — Feuilles de Poules & Résultats Épée M15</div>
       </div>
-      <div class="header-actions">
-        <button class="btn-ghost" onclick="window.print()">Imprimer</button>
-        <button class="btn-ghost" id="btnExport">Exporter JSON</button>
-        <label class="btn-ghost" style="cursor:pointer;">
-          Importer JSON
-          <input type="file" id="fileImport" accept=".json" style="display:none;" />
-        </label>
-        <button class="btn-ghost btn-danger" id="btnReset">Réinitialiser</button>
-      </div>
+      <div class="header-actions" id="headerActions"></div>
     </div>
   </header>
 
@@ -605,6 +659,8 @@
   </main>
 
   <script>
+    // Code PIN d'accès au mode saisie (modifiable avant mise en ligne)
+    const EDITOR_PIN = "2026";
     const STORAGE_KEY = "scaramouche2026_m15_poules_v1";
 
     const BOUTS_ORDER_7 = [
@@ -770,6 +826,7 @@
     }
 
     let state = loadState();
+    let isEditor = false; // Mode Spectateur (lecture seule) par défaut
     let activeEventId = "EDM15";
     let activeView = "all";
     let searchQuery = "";
@@ -779,6 +836,45 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       } catch (e) {
         console.error(e);
+      }
+    }
+
+    function requestEditorMode() {
+      const code = prompt("Entrez le code PIN arbitre / organisateur pour activer la saisie :");
+      if (code === null) return;
+      if (code.trim() === EDITOR_PIN) {
+        isEditor = true;
+        renderAll();
+      } else {
+        alert("Code PIN incorrect. L'affichage reste en mode Spectateur (lecture seule).");
+      }
+    }
+
+    function lockViewerMode() {
+      isEditor = false;
+      renderAll();
+    }
+
+    function renderHeaderActions() {
+      const wrap = document.getElementById("headerActions");
+      if (!isEditor) {
+        wrap.innerHTML = `
+          <span class="mode-badge viewer">Mode Spectateur (lecture seule)</span>
+          <button class="btn-ghost" onclick="window.print()">Imprimer</button>
+          <button class="btn-ghost btn-unlock" onclick="requestEditorMode()">Mode Saisie (PIN)</button>
+        `;
+      } else {
+        wrap.innerHTML = `
+          <span class="mode-badge editor">Mode Saisie actif</span>
+          <button class="btn-ghost" onclick="window.print()">Imprimer</button>
+          <button class="btn-ghost" onclick="exportJson()">Exporter JSON</button>
+          <label class="btn-ghost" style="cursor:pointer;">
+            Importer JSON
+            <input type="file" id="fileImport" accept=".json" style="display:none;" onchange="importJson(event)" />
+          </label>
+          <button class="btn-ghost btn-danger" onclick="resetAll()">Réinitialiser</button>
+          <button class="btn-ghost" onclick="lockViewerMode()">Verrouiller</button>
+        `;
       }
     }
 
@@ -1060,6 +1156,42 @@
               const bWin = sA !== null && sB !== null && (sB > sA || (isTie && sc.prio === "b"));
               const isDone = sA !== null && sB !== null;
 
+              const scoreControls = isEditor
+                ? `
+                  <input
+                    type="number"
+                    min="0"
+                    max="15"
+                    value="${sc.a}"
+                    oninput="updateScore('${pool.numero}', '${mKey}', 'a', this.value)"
+                  />
+                  ${
+                    isTie
+                      ? `<button class="prio-btn ${sc.prio === "a" ? "active" : ""}" title="Victoire à la priorité pour ${fA.nom}" onclick="togglePrio('${pool.numero}', '${mKey}', 'a')">V</button>`
+                      : ""
+                  }
+                  <span>/</span>
+                  ${
+                    isTie
+                      ? `<button class="prio-btn ${sc.prio === "b" ? "active" : ""}" title="Victoire à la priorité pour ${fB.nom}" onclick="togglePrio('${pool.numero}', '${mKey}', 'b')">V</button>`
+                      : ""
+                  }
+                  <input
+                    type="number"
+                    min="0"
+                    max="15"
+                    value="${sc.b}"
+                    oninput="updateScore('${pool.numero}', '${mKey}', 'b', this.value)"
+                  />
+                `
+                : `
+                  <span class="score-read">${sc.a !== "" ? sc.a : "·"}</span>
+                  ${isTie && sc.prio === "a" ? `<span class="prio-btn active" style="cursor:default;">V</span>` : ""}
+                  <span>/</span>
+                  ${isTie && sc.prio === "b" ? `<span class="prio-btn active" style="cursor:default;">V</span>` : ""}
+                  <span class="score-read">${sc.b !== "" ? sc.b : "·"}</span>
+                `;
+
               return `
                 <div class="bout-box ${isDone ? "done" : ""}">
                   <span class="bout-num">${mKey}</span>
@@ -1072,33 +1204,7 @@
                       <strong>${fB.num}</strong> ${fB.nom}
                     </span>
                   </div>
-                  <div class="score-zone">
-                    <input
-                      type="number"
-                      min="0"
-                      max="15"
-                      value="${sc.a}"
-                      oninput="updateScore('${pool.numero}', '${mKey}', 'a', this.value)"
-                    />
-                    ${
-                      isTie
-                        ? `<button class="prio-btn ${sc.prio === "a" ? "active" : ""}" title="Victoire à la priorité pour ${fA.nom}" onclick="togglePrio('${pool.numero}', '${mKey}', 'a')">V</button>`
-                        : ""
-                    }
-                    <span>/</span>
-                    ${
-                      isTie
-                        ? `<button class="prio-btn ${sc.prio === "b" ? "active" : ""}" title="Victoire à la priorité pour ${fB.nom}" onclick="togglePrio('${pool.numero}', '${mKey}', 'b')">V</button>`
-                        : ""
-                    }
-                    <input
-                      type="number"
-                      min="0"
-                      max="15"
-                      value="${sc.b}"
-                      oninput="updateScore('${pool.numero}', '${mKey}', 'b', this.value)"
-                    />
-                  </div>
+                  <div class="score-zone">${scoreControls}</div>
                 </div>
               `;
             })
@@ -1115,7 +1221,8 @@
                       type="text"
                       class="piste-input"
                       value="${pool.piste}"
-                      placeholder="N°"
+                      placeholder="${isEditor ? "N°" : "-"}"
+                      ${isEditor ? "" : "disabled"}
                       oninput="updatePoolMeta('${pool.numero}', 'piste', this.value)"
                     />
                   </div>
@@ -1127,7 +1234,8 @@
                       type="text"
                       class="ref-input"
                       value="${pool.arbitre}"
-                      placeholder="Nom de l'arbitre"
+                      placeholder="${isEditor ? "Nom de l'arbitre" : "Non renseigné"}"
+                      ${isEditor ? "" : "disabled"}
                       oninput="updatePoolMeta('${pool.numero}', 'arbitre', this.value)"
                     />
                   </div>
@@ -1159,8 +1267,12 @@
               </div>
 
               <div class="bouts-header">
-                <span class="bouts-title">Saisie des matchs (M1 à M${bouts.length})</span>
-                <span class="bouts-hint">La grille et le classement de poule se mettent à jour automatiquement.</span>
+                <span class="bouts-title">Matchs de la poule (M1 à M${bouts.length})</span>
+                <span class="bouts-hint">${
+                  isEditor
+                    ? "Saisie active : les résultats mettent à jour la grille et le classement."
+                    : "Consultation seule — activez le Mode Saisie (PIN) pour modifier les résultats."
+                }</span>
               </div>
               <div class="bouts-grid">${boutsHtml}</div>
             </article>
@@ -1182,6 +1294,7 @@
     }
 
     function updatePoolMeta(poolNumero, field, value) {
+      if (!isEditor) return;
       const pool = state[activeEventId].pools.find((p) => p.numero === poolNumero);
       if (pool) {
         pool[field] = value;
@@ -1191,6 +1304,7 @@
     }
 
     function updateScore(poolNumero, matchKey, side, value) {
+      if (!isEditor) return;
       const pool = state[activeEventId].pools.find((p) => p.numero === poolNumero);
       if (!pool) return;
       if (!pool.scores[matchKey]) {
@@ -1222,6 +1336,7 @@
     }
 
     function togglePrio(poolNumero, matchKey, side) {
+      if (!isEditor) return;
       const pool = state[activeEventId].pools.find((p) => p.numero === poolNumero);
       if (!pool || !pool.scores[matchKey]) return;
       pool.scores[matchKey].prio = pool.scores[matchKey].prio === side ? "" : side;
@@ -1229,18 +1344,7 @@
       renderContent();
     }
 
-    function renderAll() {
-      renderEventTabs();
-      renderFilterPills();
-      renderContent();
-    }
-
-    document.getElementById("searchInput").addEventListener("input", (e) => {
-      searchQuery = e.target.value;
-      renderContent();
-    });
-
-    document.getElementById("btnExport").addEventListener("click", () => {
+    function exportJson() {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
@@ -1248,9 +1352,10 @@
       a.download = `scaramouche2026-poules-${new Date().toISOString().slice(0, 10)}.json`;
       a.click();
       URL.revokeObjectURL(url);
-    });
+    }
 
-    document.getElementById("fileImport").addEventListener("change", (e) => {
+    function importJson(e) {
+      if (!isEditor) return;
       const file = e.target.files && e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
@@ -1271,14 +1376,27 @@
       };
       reader.readAsText(file);
       e.target.value = "";
-    });
+    }
 
-    document.getElementById("btnReset").addEventListener("click", () => {
+    function resetAll() {
+      if (!isEditor) return;
       if (confirm("Effacer tous les scores saisis et revenir aux feuilles vierges ?")) {
         state = JSON.parse(JSON.stringify(INITIAL_DATA));
         saveState();
         renderAll();
       }
+    }
+
+    function renderAll() {
+      renderHeaderActions();
+      renderEventTabs();
+      renderFilterPills();
+      renderContent();
+    }
+
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      searchQuery = e.target.value;
+      renderContent();
     });
 
     renderAll();
