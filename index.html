@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Scaramouche 2026 — Feuilles de Poules & Résultats Épée M15</title>
+  <title>Scaramouche 2026 — Poules & Tableaux Éliminatoires</title>
   <style>
     :root {
       --bg: #eef2f6;
@@ -42,7 +42,7 @@
     }
 
     .container {
-      max-width: 1220px;
+      max-width: 1280px;
       margin: 0 auto;
     }
 
@@ -591,6 +591,166 @@
       text-align: center;
     }
 
+    /* Tableau éliminatoire T16 */
+    .bracket-scroll {
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .bracket-board {
+      min-width: 1020px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .round-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .round-header {
+      background: var(--ink);
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 8px 10px;
+      border-radius: 5px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .round-matches {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 10px;
+    }
+
+    .de-match {
+      border: 1.5px solid var(--line);
+      border-radius: 6px;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+
+    .de-match-top {
+      background: #e2e8f0;
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .de-slot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      padding: 6px 8px;
+      background: #ffffff;
+      border-top: 1px solid #cbd5e1;
+      font-size: 12px;
+    }
+
+    .de-slot.winner-slot {
+      background: var(--win);
+    }
+
+    .de-slot.bye-slot {
+      background: #f8fafc;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .de-fencer {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .de-seed {
+      font-weight: 800;
+      color: var(--muted);
+      margin-right: 4px;
+    }
+
+    .de-name {
+      font-weight: 800;
+    }
+
+    .de-club {
+      display: block;
+      font-size: 10.5px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .de-score-input {
+      width: 40px;
+      height: 24px;
+      text-align: center;
+      border: 1.5px solid #64748b;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 12px;
+      background: #ffffff;
+    }
+
+    .de-score-input:disabled {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: var(--ink);
+    }
+
+    .de-score-read {
+      min-width: 24px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .champion-box {
+      border: 2px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 6px;
+      padding: 14px;
+      text-align: center;
+    }
+
+    .champion-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .champion-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .champion-club {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .de-list-card {
+      margin-top: 18px;
+      border-top: 1.5px solid var(--grid);
+      padding-top: 14px;
+    }
+
     @media (max-width: 740px) {
       .sheet-header {
         grid-template-columns: 1fr;
@@ -631,8 +791,8 @@
   <header class="app-header">
     <div class="container header-row">
       <div>
-        <div class="kicker">scaramouche2026 • SCO ESCRIME • 21/11/2026 • Poules Tour n°1</div>
-        <div class="app-title">Scaramouche 2026 — Feuilles de Poules & Résultats Épée M15</div>
+        <div class="kicker">scaramouche2026 • SCO ESCRIME • 21/11/2026</div>
+        <div class="app-title">Scaramouche 2026 — Poules & Tableaux Éliminatoires</div>
       </div>
       <div class="header-actions" id="headerActions"></div>
     </div>
@@ -659,7 +819,6 @@
   </main>
 
   <script>
-    // Code PIN d'accès au mode saisie (modifiable avant mise en ligne)
     const EDITOR_PIN = "2026";
     const STORAGE_KEY = "scaramouche2026_m15_poules_v1";
 
@@ -675,731 +834,24 @@
       [6, 4]
     ];
 
-    const INITIAL_DATA = {
-      EDM15: {
-        id: "EDM15",
-        shortTitle: "Épée Dames M15 (3 poules • 21 tireuses)",
-        epreuve: "Epée - Dames - M15",
-        tour: "Poules Tour n°1",
-        club: "SCO ESCRIME",
-        date: "21/11/2026",
-        pools: [
-          {
-            numero: "01",
-            piste: "2",
-            arbitre: "",
-            fencers: [
-              { num: 1, nom: "CHAMAYOU", prenom: "Domitille", club: "AURAY ESC" },
-              { num: 2, nom: "DIAKITE", prenom: "Maryam", club: "NANTES CEN" },
-              { num: 3, nom: "SALMON RADENAC", prenom: "Romane", club: "LORIENT SE" },
-              { num: 4, nom: "LE COURTOIS BÉZIER", prenom: "Victoire", club: "LAVAL CE" },
-              { num: 5, nom: "LIOTHAUD", prenom: "Valentine", club: "ANGERS SCO" },
-              { num: 6, nom: "BERNARD", prenom: "Alizee", club: "SABLES OLONN" },
-              { num: 7, nom: "PONIN", prenom: "Noélia", club: "JA ST MALO" }
-            ],
-            scores: {}
-          },
-          {
-            numero: "02",
-            piste: "4",
-            arbitre: "",
-            fencers: [
-              { num: 1, nom: "SAULNIER", prenom: "Emma", club: "NANTES CEN" },
-              { num: 2, nom: "GERARD", prenom: "Valentine", club: "ANGERS CSAD" },
-              { num: 3, nom: "BOLLENGIER-STRAGIER", prenom: "Elise", club: "NEUVILLE 72" },
-              { num: 4, nom: "EON", prenom: "Alwena", club: "JA ST MALO" },
-              { num: 5, nom: "BERNARD", prenom: "Cecile", club: "RENNES CSG" },
-              { num: 6, nom: "GASTE", prenom: "Clara", club: "ANGERS SCO" },
-              { num: 7, nom: "VALOIS", prenom: "Isalys", club: "NIORT CE" }
-            ],
-            scores: {}
-          },
-          {
-            numero: "03",
-            piste: "6",
-            arbitre: "",
-            fencers: [
-              { num: 1, nom: "LOORIUS", prenom: "Yanna", club: "LOUDEAC" },
-              { num: 2, nom: "ROCHEREAU", prenom: "Inès", club: "NANTES CEN" },
-              { num: 3, nom: "MOREAU", prenom: "Mélia", club: "NEUVILLE 72" },
-              { num: 4, nom: "QUENON", prenom: "Chloé", club: "JA ST MALO" },
-              { num: 5, nom: "POUCH", prenom: "Zoe", club: "QUIMPER EC" },
-              { num: 6, nom: "LOUSTAUNAU", prenom: "Raphaëlle", club: "ANGERS SCO" },
-              { num: 7, nom: "FOULON-LIVET", prenom: "Clarisse", club: "LAVAL CE" }
-            ],
-            scores: {}
-          }
-        ]
-      },
-      EHM15: {
-        id: "EHM15",
-        shortTitle: "Épée Hommes M15 (5 poules • 32 tireurs)",
-        epreuve: "Epée - Hommes - M15",
-        tour: "Poules Tour n°1",
-        club: "SCO ESCRIME",
-        date: "21/11/2026",
-        pools: [
-          {
-            numero: "01",
-            piste: "",
-            arbitre: "",
-            fencers: [
-              { num: 1, nom: "ROUX", prenom: "Jean", club: "" },
-              { num: 2, nom: "BILLEROT", prenom: "Axel", club: "" },
-              { num: 3, nom: "FRESSANCOURT", prenom: "Matéo", club: "" },
-              { num: 4, nom: "LE CALVEZ", prenom: "Paul", club: "" },
-              { num: 5, nom: "FOULARD", prenom: "Yanis", club: "" },
-              { num: 6, nom: "BOUREE", prenom: "Lucas", club: "" },
-              { num: 7, nom: "YSTE", prenom: "Jocelyn", club: "" }
-            ],
-            scores: {}
-          },
-          {
-            numero: "02",
-            piste: "",
-            arbitre: "",
-            fencers: [
-              { num: 1, nom: "LEROY", prenom: "Malo", club: "" },
-              { num: 2, nom: "ANTOUNE", prenom: "Gibran", club: "" },
-              { num: 3, nom: "LE ROUX", prenom: "Lenny", club: "" },
-              { num: 4, nom: "CHEVAL", prenom: "Arthur", club: "" },
-              { num: 5, nom: "BENOIST DEFRADE", prenom: "Camille", club: "" },
-              { num: 6, nom: "BEURY", prenom: "Maxence", club: "" },
-              { num: 7, nom: "CODDEVILLE", prenom: "Robin", club: "" }
-            ],
-            scores: {}
-          },
-          {
-            numero: "03",
-            piste: "",
-            arbitre: "",
-            fencers: [
-              { num: 1, nom: "BUNNENS", prenom: "Teddy", club: "" },
-              { num: 2, nom: "CHERASSE", prenom: "Amaury", club: "" },
-              { num: 3, nom: "VIDAL-JAFFRE", prenom: "Aaron", club: "" },
-              { num: 4, nom: "BLACHIER BECHEZ", prenom: "Augustin", club: "" },
-              { num: 5, nom: "GAUTHIER", prenom: "Magnus", club: "" },
-              { num: 6, nom: "LANDRON", prenom: "Rudy", club: "" }
-            ],
-            scores: {}
-          },
-          {
-            numero: "04",
-            piste: "",
-            arbitre: "",
-            fencers: [
-              { num: 1, nom: "MAILLOT", prenom: "Louis", club: "" },
-              { num: 2, nom: "LE FOLL", prenom: "Noe", club: "" },
-              { num: 3, nom: "ROSSI MORVAN", prenom: "Gabriel", club: "" },
-              { num: 4, nom: "GOURDIN", prenom: "Arthur", club: "" },
-              { num: 5, nom: "MERAND", prenom: "Louis", club: "" },
-              { num: 6, nom: "MICHAUD LIPOVAC", prenom: "Oswald", club: "" }
-            ],
-            scores: {}
-          },
-          {
-            numero: "05",
-            piste: "",
-            arbitre: "",
-            fencers: [
-              { num: 1, nom: "GIRARD", prenom: "Jules", club: "" },
-              { num: 2, nom: "VIMEUX", prenom: "Théo", club: "" },
-              { num: 3, nom: "GUERIN", prenom: "Alexis", club: "" },
-              { num: 4, nom: "DUFEIL", prenom: "Côme", club: "" },
-              { num: 5, nom: "PIRON", prenom: "Raphaël", club: "" },
-              { num: 6, nom: "REBY", prenom: "Adrien", club: "" }
-            ],
-            scores: {}
-          }
-        ]
-      }
-    };
-
-    function loadState() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
-      } catch (e) {
-        console.error(e);
-      }
-      return JSON.parse(JSON.stringify(INITIAL_DATA));
-    }
-
-    let state = loadState();
-    let isEditor = false; // Mode Spectateur (lecture seule) par défaut
-    let activeEventId = "EDM15";
-    let activeView = "all";
-    let searchQuery = "";
-
-    function saveState() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    function requestEditorMode() {
-      const code = prompt("Entrez le code PIN arbitre / organisateur pour activer la saisie :");
-      if (code === null) return;
-      if (code.trim() === EDITOR_PIN) {
-        isEditor = true;
-        renderAll();
-      } else {
-        alert("Code PIN incorrect. L'affichage reste en mode Spectateur (lecture seule).");
-      }
-    }
-
-    function lockViewerMode() {
-      isEditor = false;
-      renderAll();
-    }
-
-    function renderHeaderActions() {
-      const wrap = document.getElementById("headerActions");
-      if (!isEditor) {
-        wrap.innerHTML = `
-          <span class="mode-badge viewer">Mode Spectateur (lecture seule)</span>
-          <button class="btn-ghost" onclick="window.print()">Imprimer</button>
-          <button class="btn-ghost btn-unlock" onclick="requestEditorMode()">Mode Saisie (PIN)</button>
-        `;
-      } else {
-        wrap.innerHTML = `
-          <span class="mode-badge editor">Mode Saisie actif</span>
-          <button class="btn-ghost" onclick="window.print()">Imprimer</button>
-          <button class="btn-ghost" onclick="exportJson()">Exporter JSON</button>
-          <label class="btn-ghost" style="cursor:pointer;">
-            Importer JSON
-            <input type="file" id="fileImport" accept=".json" style="display:none;" onchange="importJson(event)" />
-          </label>
-          <button class="btn-ghost btn-danger" onclick="resetAll()">Réinitialiser</button>
-          <button class="btn-ghost" onclick="lockViewerMode()">Verrouiller</button>
-        `;
-      }
-    }
-
-    function getBoutsList(fencerCount) {
-      return fencerCount === 6 ? BOUTS_ORDER_6 : BOUTS_ORDER_7;
-    }
-
-    function computePool(pool) {
-      const n = pool.fencers.length;
-      const bouts = getBoutsList(n);
-      const matrix = {};
-      const stats = {};
-
-      pool.fencers.forEach((f) => {
-        matrix[f.num] = {};
-        stats[f.num] = {
-          fencer: f,
-          poolNum: pool.numero,
-          piste: pool.piste,
-          matches: 0,
-          victories: 0,
-          td: 0,
-          tr: 0
-        };
-      });
-
-      bouts.forEach(([aNum, bNum], idx) => {
-        const key = `M${idx + 1}`;
-        const sc = pool.scores[key];
-        if (!sc || sc.a === "" || sc.b === "" || sc.a === undefined || sc.b === undefined) {
-          return;
-        }
-        const sA = Number(sc.a);
-        const sB = Number(sc.b);
-        if (Number.isNaN(sA) || Number.isNaN(sB)) return;
-
-        let aWins = false;
-        let bWins = false;
-        if (sA > sB) {
-          aWins = true;
-        } else if (sB > sA) {
-          bWins = true;
-        } else if (sc.prio === "a") {
-          aWins = true;
-        } else if (sc.prio === "b") {
-          bWins = true;
-        }
-
-        stats[aNum].matches += 1;
-        stats[bNum].matches += 1;
-        stats[aNum].td += sA;
-        stats[aNum].tr += sB;
-        stats[bNum].td += sB;
-        stats[bNum].tr += sA;
-
-        if (aWins) stats[aNum].victories += 1;
-        if (bWins) stats[bNum].victories += 1;
-
-        matrix[aNum][bNum] = {
-          label: aWins ? `V${sA}` : `${sA}`,
-          win: aWins,
-          loss: bWins
-        };
-        matrix[bNum][aNum] = {
-          label: bWins ? `V${sB}` : `${sB}`,
-          win: bWins,
-          loss: aWins
-        };
-      });
-
-      const rankedList = Object.values(stats)
-        .map((s) => ({
-          ...s,
-          ratio: s.matches > 0 ? s.victories / s.matches : 0,
-          index: s.td - s.tr
-        }))
-        .sort((a, b) => {
-          if (b.ratio !== a.ratio) return b.ratio - a.ratio;
-          if (b.index !== a.index) return b.index - a.index;
-          return b.td - a.td;
-        });
-
-      const rankByNum = {};
-      rankedList.forEach((item, idx) => {
-        rankByNum[item.fencer.num] = item.matches > 0 ? idx + 1 : "-";
-      });
-
-      return { matrix, stats, rankedList, rankByNum };
-    }
-
-    function matchesSearch(fencer, q) {
-      if (!q) return false;
-      return (
-        fencer.nom.toLowerCase().includes(q) ||
-        fencer.prenom.toLowerCase().includes(q) ||
-        (fencer.club && fencer.club.toLowerCase().includes(q))
-      );
-    }
-
-    function renderEventTabs() {
-      const wrap = document.getElementById("eventTabs");
-      wrap.innerHTML = Object.values(state)
-        .map(
-          (ev) => `
-          <button
-            class="event-btn ${ev.id === activeEventId ? "active" : ""}"
-            onclick="selectEvent('${ev.id}')"
-          >
-            ${ev.shortTitle}
-          </button>
-        `
-        )
-        .join("");
-    }
-
-    function renderFilterPills() {
-      const ev = state[activeEventId];
-      const wrap = document.getElementById("filterPills");
-      const poolPills = ev.pools
-        .map(
-          (p) => `
-          <button
-            class="pill-btn ${activeView === p.numero ? "active" : ""}"
-            onclick="selectView('${p.numero}')"
-          >
-            Poule n° ${p.numero}${p.piste ? ` (Piste ${p.piste})` : ""}
-          </button>
-        `
-        )
-        .join("");
-
-      wrap.innerHTML = `
-        <button
-          class="pill-btn ${activeView === "all" ? "active" : ""}"
-          onclick="selectView('all')"
-        >
-          Toutes les poules (${ev.pools.length})
-        </button>
-        ${poolPills}
-        <button
-          class="pill-btn ranking-pill ${activeView === "ranking" ? "active" : ""}"
-          onclick="selectView('ranking')"
-        >
-          Classement Général
-        </button>
-      `;
-    }
-
-    function renderContent() {
-      const ev = state[activeEventId];
-      const main = document.getElementById("mainContent");
-      const q = searchQuery.trim().toLowerCase();
-
-      if (activeView === "ranking") {
-        const allRows = ev.pools
-          .flatMap((pool) => computePool(pool).rankedList)
-          .sort((a, b) => {
-            if (b.ratio !== a.ratio) return b.ratio - a.ratio;
-            if (b.index !== a.index) return b.index - a.index;
-            return b.td - a.td;
-          });
-
-        const tableRows = allRows
-          .map((r, idx) => {
-            const hit = matchesSearch(r.fencer, q);
-            return `
-              <tr class="${hit ? "row-highlight" : ""}">
-                <td class="num"><strong>${idx + 1}</strong></td>
-                <td><strong>${r.fencer.nom}</strong> ${r.fencer.prenom}</td>
-                <td>${r.fencer.club || "-"}</td>
-                <td class="num">Poule ${r.poolNum}${r.piste ? ` (P.${r.piste})` : ""}</td>
-                <td class="num"><strong>${r.victories}</strong> / ${r.matches}</td>
-                <td class="num">${r.ratio.toFixed(2)}</td>
-                <td class="num">${r.td}</td>
-                <td class="num">${r.tr}</td>
-                <td class="num"><strong>${r.index > 0 ? "+" + r.index : r.index}</strong></td>
-              </tr>
-            `;
-          })
-          .join("");
-
-        main.innerHTML = `
-          <div class="ranking-card">
-            <h2>Classement Général Intermédiaire — ${ev.epreuve}</h2>
-            <div class="ranking-sub">scaramouche2026 • ${ev.tour} • ${ev.club} • ${ev.date}</div>
-            <div class="table-wrap">
-              <table class="rank-table">
-                <thead>
-                  <tr>
-                    <th class="num">Rang</th>
-                    <th>Tireur / Tireuse</th>
-                    <th>Club</th>
-                    <th class="num">Poule</th>
-                    <th class="num">V / M</th>
-                    <th class="num">Ratio</th>
-                    <th class="num">TD</th>
-                    <th class="num">TR</th>
-                    <th class="num">Indice</th>
-                  </tr>
-                </thead>
-                <tbody>${tableRows}</tbody>
-              </table>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      const poolsToShow = ev.pools.filter(
-        (p) =>
-          (activeView === "all" || p.numero === activeView) &&
-          (!q || p.fencers.some((f) => matchesSearch(f, q)))
-      );
-
-      if (poolsToShow.length === 0) {
-        main.innerHTML = `<div class="sheet" style="text-align:center;color:#475569;">Aucun résultat pour « ${searchQuery} ».</div>`;
-        return;
-      }
-
-      main.innerHTML = `<div class="sheets-stack">${poolsToShow
-        .map((pool) => {
-          const { matrix, stats, rankByNum } = computePool(pool);
-          const byNum = Object.fromEntries(pool.fencers.map((f) => [f.num, f]));
-          const bouts = getBoutsList(pool.fencers.length);
-
-          const colHeaders = pool.fencers
-            .map((f) => `<th style="width:38px;">${f.num}</th>`)
-            .join("");
-
-          const matrixRows = pool.fencers
-            .map((rowF) => {
-              const s = stats[rowF.num];
-              const ind = s.td - s.tr;
-              const hit = matchesSearch(rowF, q);
-
-              const cells = pool.fencers
-                .map((colF) => {
-                  if (rowF.num === colF.num) {
-                    return `<td class="matrix-cell matrix-diag">✕</td>`;
-                  }
-                  const res = matrix[rowF.num][colF.num];
-                  if (!res) return `<td class="matrix-cell"></td>`;
-                  const cls = res.win ? "matrix-win" : res.loss ? "matrix-loss" : "";
-                  return `<td class="matrix-cell ${cls}">${res.label}</td>`;
-                })
-                .join("");
-
-              return `
-                <tr class="${hit ? "row-highlight" : ""}">
-                  <td class="f-name-cell">
-                    <span class="f-num">${rowF.num}</span>
-                    <span class="f-nom">${rowF.nom}</span>
-                    <span>${rowF.prenom}</span>
-                    ${rowF.club ? `<span class="f-club">${rowF.club}</span>` : ""}
-                  </td>
-                  ${cells}
-                  <td class="stat-col">${s.victories}</td>
-                  <td class="stat-col">${s.td}</td>
-                  <td class="stat-col">${s.tr}</td>
-                  <td class="stat-col">${ind > 0 ? "+" + ind : ind}</td>
-                  <td class="stat-rank">${rankByNum[rowF.num]}</td>
-                  <td class="sig-col">Signature</td>
-                </tr>
-              `;
-            })
-            .join("");
-
-          const boutsHtml = bouts
-            .map(([aNum, bNum], idx) => {
-              const mKey = `M${idx + 1}`;
-              const fA = byNum[aNum];
-              const fB = byNum[bNum];
-              const sc = pool.scores[mKey] || { a: "", b: "", prio: "" };
-
-              const sA = sc.a !== "" ? Number(sc.a) : null;
-              const sB = sc.b !== "" ? Number(sc.b) : null;
-              const isTie = sA !== null && sB !== null && sA === sB;
-              const aWin = sA !== null && sB !== null && (sA > sB || (isTie && sc.prio === "a"));
-              const bWin = sA !== null && sB !== null && (sB > sA || (isTie && sc.prio === "b"));
-              const isDone = sA !== null && sB !== null;
-
-              const scoreControls = isEditor
-                ? `
-                  <input
-                    type="number"
-                    min="0"
-                    max="15"
-                    value="${sc.a}"
-                    oninput="updateScore('${pool.numero}', '${mKey}', 'a', this.value)"
-                  />
-                  ${
-                    isTie
-                      ? `<button class="prio-btn ${sc.prio === "a" ? "active" : ""}" title="Victoire à la priorité pour ${fA.nom}" onclick="togglePrio('${pool.numero}', '${mKey}', 'a')">V</button>`
-                      : ""
-                  }
-                  <span>/</span>
-                  ${
-                    isTie
-                      ? `<button class="prio-btn ${sc.prio === "b" ? "active" : ""}" title="Victoire à la priorité pour ${fB.nom}" onclick="togglePrio('${pool.numero}', '${mKey}', 'b')">V</button>`
-                      : ""
-                  }
-                  <input
-                    type="number"
-                    min="0"
-                    max="15"
-                    value="${sc.b}"
-                    oninput="updateScore('${pool.numero}', '${mKey}', 'b', this.value)"
-                  />
-                `
-                : `
-                  <span class="score-read">${sc.a !== "" ? sc.a : "·"}</span>
-                  ${isTie && sc.prio === "a" ? `<span class="prio-btn active" style="cursor:default;">V</span>` : ""}
-                  <span>/</span>
-                  ${isTie && sc.prio === "b" ? `<span class="prio-btn active" style="cursor:default;">V</span>` : ""}
-                  <span class="score-read">${sc.b !== "" ? sc.b : "·"}</span>
-                `;
-
-              return `
-                <div class="bout-box ${isDone ? "done" : ""}">
-                  <span class="bout-num">${mKey}</span>
-                  <div class="bout-pair">
-                    <span class="f-tag ${aWin ? "winner" : ""}" title="${fA.nom} ${fA.prenom}">
-                      <strong>${fA.num}</strong> ${fA.nom}
-                    </span>
-                    <span style="color:#64748b;font-size:10px;font-weight:800;">-</span>
-                    <span class="f-tag ${bWin ? "winner" : ""}" title="${fB.nom} ${fB.prenom}">
-                      <strong>${fB.num}</strong> ${fB.nom}
-                    </span>
-                  </div>
-                  <div class="score-zone">${scoreControls}</div>
-                </div>
-              `;
-            })
-            .join("");
-
-          return `
-            <article class="sheet">
-              <div class="sheet-header">
-                <div class="h-box">
-                  <div class="pool-heading">Poule n° ${pool.numero}</div>
-                  <div class="inline-field">
-                    <span>Piste :</span>
-                    <input
-                      type="text"
-                      class="piste-input"
-                      value="${pool.piste}"
-                      placeholder="${isEditor ? "N°" : "-"}"
-                      ${isEditor ? "" : "disabled"}
-                      oninput="updatePoolMeta('${pool.numero}', 'piste', this.value)"
-                    />
-                  </div>
-                </div>
-                <div class="h-box">
-                  <div class="inline-field">
-                    <span>Arbitre :</span>
-                    <input
-                      type="text"
-                      class="ref-input"
-                      value="${pool.arbitre}"
-                      placeholder="${isEditor ? "Nom de l'arbitre" : "Non renseigné"}"
-                      ${isEditor ? "" : "disabled"}
-                      oninput="updatePoolMeta('${pool.numero}', 'arbitre', this.value)"
-                    />
-                  </div>
-                  <div class="event-center-title">${ev.epreuve}</div>
-                  <div class="event-center-sub">${ev.tour}</div>
-                </div>
-                <div class="h-box">
-                  <div class="right-meta">${ev.club}</div>
-                  <div class="right-date">${ev.date}</div>
-                </div>
-              </div>
-
-              <div class="table-wrap">
-                <table class="cross-table">
-                  <thead>
-                    <tr>
-                      <th class="left">Tireurs / Tireuses</th>
-                      ${colHeaders}
-                      <th>V</th>
-                      <th>TD</th>
-                      <th>TR</th>
-                      <th>Ind.</th>
-                      <th>Pl.</th>
-                      <th>Signature</th>
-                    </tr>
-                  </thead>
-                  <tbody>${matrixRows}</tbody>
-                </table>
-              </div>
-
-              <div class="bouts-header">
-                <span class="bouts-title">Matchs de la poule (M1 à M${bouts.length})</span>
-                <span class="bouts-hint">${
-                  isEditor
-                    ? "Saisie active : les résultats mettent à jour la grille et le classement."
-                    : "Consultation seule — activez le Mode Saisie (PIN) pour modifier les résultats."
-                }</span>
-              </div>
-              <div class="bouts-grid">${boutsHtml}</div>
-            </article>
-          `;
-        })
-        .join("")}</div>`;
-    }
-
-    function selectEvent(id) {
-      activeEventId = id;
-      activeView = "all";
-      renderAll();
-    }
-
-    function selectView(view) {
-      activeView = view;
-      renderFilterPills();
-      renderContent();
-    }
-
-    function updatePoolMeta(poolNumero, field, value) {
-      if (!isEditor) return;
-      const pool = state[activeEventId].pools.find((p) => p.numero === poolNumero);
-      if (pool) {
-        pool[field] = value;
-        saveState();
-        if (field === "piste") renderFilterPills();
-      }
-    }
-
-    function updateScore(poolNumero, matchKey, side, value) {
-      if (!isEditor) return;
-      const pool = state[activeEventId].pools.find((p) => p.numero === poolNumero);
-      if (!pool) return;
-      if (!pool.scores[matchKey]) {
-        pool.scores[matchKey] = { a: "", b: "", prio: "" };
-      }
-      pool.scores[matchKey][side] = value;
-      if (pool.scores[matchKey].a !== pool.scores[matchKey].b) {
-        pool.scores[matchKey].prio = "";
-      }
-      saveState();
-
-      const activeEl = document.activeElement;
-      const selStart = activeEl && activeEl.selectionStart;
-      const attrOnInput = activeEl && activeEl.getAttribute("oninput");
-
-      renderContent();
-
-      if (attrOnInput) {
-        const restored = document.querySelector(`input[oninput="${attrOnInput}"]`);
-        if (restored) {
-          restored.focus();
-          if (typeof selStart === "number") {
-            try {
-              restored.setSelectionRange(selStart, selStart);
-            } catch {}
-          }
-        }
-      }
-    }
-
-    function togglePrio(poolNumero, matchKey, side) {
-      if (!isEditor) return;
-      const pool = state[activeEventId].pools.find((p) => p.numero === poolNumero);
-      if (!pool || !pool.scores[matchKey]) return;
-      pool.scores[matchKey].prio = pool.scores[matchKey].prio === side ? "" : side;
-      saveState();
-      renderContent();
-    }
-
-    function exportJson() {
-      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `scaramouche2026-poules-${new Date().toISOString().slice(0, 10)}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function importJson(e) {
-      if (!isEditor) return;
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (evt) => {
-        try {
-          const parsed = JSON.parse(evt.target.result);
-          if (parsed && parsed.EDM15 && parsed.EHM15) {
-            state = parsed;
-            saveState();
-            renderAll();
-            alert("Résultats importés avec succès.");
-          } else {
-            alert("Format de fichier JSON non reconnu.");
-          }
-        } catch {
-          alert("Fichier JSON invalide.");
-        }
-      };
-      reader.readAsText(file);
-      e.target.value = "";
-    }
-
-    function resetAll() {
-      if (!isEditor) return;
-      if (confirm("Effacer tous les scores saisis et revenir aux feuilles vierges ?")) {
-        state = JSON.parse(JSON.stringify(INITIAL_DATA));
-        saveState();
-        renderAll();
-      }
-    }
-
-    function renderAll() {
-      renderHeaderActions();
-      renderEventTabs();
-      renderFilterPills();
-      renderContent();
-    }
-
-    document.getElementById("searchInput").addEventListener("input", (e) => {
-      searchQuery = e.target.value;
-      renderContent();
-    });
-
-    renderAll();
-  </script>
-</body>
-</html>
+    // Données du tableau éliminatoire Fleuret - Dames - M15 (T16.pdf)[cite: 12]
+    const INITIAL_FDM15_T16 = {
+      id: "FDM15_T16",
+      type: "bracket",
+      shortTitle: "Fleuret Dames M15 — Tableau de 16",
+      epreuve: "Fleuret - Dames - M15",
+      tour: "Tableau de 16",
+      club: "SCO ESCRIME",
+      date: "21/11/2026",
+      piste: "",
+      arbitre: "",
+      seeds: {
+        1: { seed: 1, nom: "BACHELOT", prenom: "Blanche", club: "SABLE SARTHE" },
+        2: { seed: 2, nom: "DION-DOMENEGHINI", prenom: "Olga", club: "VALLET" },
+        3: { seed: 3, nom: "BAUMIER", prenom: "Margaux", club: "SABLE SARTHE" },
+        4: { seed: 4, nom: "DEMEOCQ", prenom: "Alice", club: "POITIERS" },
+        5: { seed: 5, nom: "KERDREUX", prenom: "Alannah", club: "NANTES NEC" },
+        6: { seed: 6, nom: "JUILLARD", prenom: "Auxane", club: "SAT TOURS" },
+        7: { seed: 7, nom: "MANJOIN", prenom: "Zélie", club: "POITIERS" },
+        8: { seed: 8, nom: "SANTONA", prenom: "Louise", club: "SAT TOURS" },
+        9: { seed: 9, nom: "
