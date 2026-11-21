@@ -1,0 +1,585 @@
+{
+  "FDM15_T16": {
+    "id": "FDM15_T16",
+    "type": "bracket",
+    "shortTitle": "Fleuret Dames M15 — Tableau de 16",
+    "epreuve": "Fleuret - Dames - M15",
+    "tour": "Tableau de 16",
+    "club": "SCO ESCRIME",
+    "date": "21/11/2026",
+    "piste": "",
+    "arbitre": "",
+    "seeds": {
+      "1": {
+        "seed": 1,
+        "nom": "BACHELOT",
+        "prenom": "Blanche",
+        "club": "SABLE SARTHE"
+      },
+      "2": {
+        "seed": 2,
+        "nom": "DION-DOMENEGHINI",
+        "prenom": "Olga",
+        "club": "VALLET"
+      },
+      "3": {
+        "seed": 3,
+        "nom": "BAUMIER",
+        "prenom": "Margaux",
+        "club": "SABLE SARTHE"
+      },
+      "4": {
+        "seed": 4,
+        "nom": "DEMEOCQ",
+        "prenom": "Alice",
+        "club": "POITIERS"
+      },
+      "5": {
+        "seed": 5,
+        "nom": "KERDREUX",
+        "prenom": "Alannah",
+        "club": "NANTES NEC"
+      },
+      "6": {
+        "seed": 6,
+        "nom": "JUILLARD",
+        "prenom": "Auxane",
+        "club": "SAT TOURS"
+      },
+      "7": {
+        "seed": 7,
+        "nom": "MANJOIN",
+        "prenom": "Zélie",
+        "club": "POITIERS"
+      },
+      "8": {
+        "seed": 8,
+        "nom": "SANTONA",
+        "prenom": "Louise",
+        "club": "SAT TOURS"
+      },
+      "9": {
+        "seed": 9,
+        "nom": "KOWALSKI",
+        "prenom": "Maélyna",
+        "club": "ST GILLES EV"
+      },
+      "10": {
+        "seed": 10,
+        "nom": "RABEC",
+        "prenom": "Mathilde",
+        "club": "RENNES ERM"
+      },
+      "11": {
+        "seed": 11,
+        "nom": "THIRION",
+        "prenom": "Zélie",
+        "club": "ANGERS SCO"
+      },
+      "12": {
+        "seed": 12,
+        "nom": "CHANTEAU",
+        "prenom": "Valentine",
+        "club": "LOUE CM"
+      },
+      "13": {
+        "seed": 13,
+        "nom": "BIENVENU",
+        "prenom": "Clara",
+        "club": "NANTES NEC"
+      },
+      "14": {
+        "seed": 14,
+        "nom": "COLONNA-CESARI",
+        "prenom": "Bianca",
+        "club": "SAT TOURS"
+      }
+    },
+    "matches": {
+      "1-16.1": {
+        "aSeed": 1,
+        "bSeed": null,
+        "aScore": "",
+        "bScore": "",
+        "byeWinner": "a"
+      },
+      "1-16.2": {
+        "aSeed": 9,
+        "bSeed": 8,
+        "aScore": "1",
+        "bScore": "2",
+        "byeWinner": ""
+      },
+      "1-16.3": {
+        "aSeed": 5,
+        "bSeed": 12,
+        "aScore": "",
+        "bScore": "",
+        "byeWinner": ""
+      },
+      "1-16.4": {
+        "aSeed": 13,
+        "bSeed": 4,
+        "aScore": "",
+        "bScore": "",
+        "byeWinner": ""
+      },
+      "1-16.5": {
+        "aSeed": 3,
+        "bSeed": 14,
+        "aScore": "",
+        "bScore": "",
+        "byeWinner": ""
+      },
+      "1-16.6": {
+        "aSeed": 11,
+        "bSeed": 6,
+        "aScore": "",
+        "bScore": "",
+        "byeWinner": ""
+      },
+      "1-16.7": {
+        "aSeed": 7,
+        "bSeed": 10,
+        "aScore": "",
+        "bScore": "",
+        "byeWinner": ""
+      },
+      "1-16.8": {
+        "aSeed": null,
+        "bSeed": 2,
+        "aScore": "",
+        "bScore": "",
+        "byeWinner": "b"
+      },
+      "1-8.1": {
+        "aScore": "",
+        "bScore": ""
+      },
+      "1-8.2": {
+        "aScore": "",
+        "bScore": ""
+      },
+      "1-8.3": {
+        "aScore": "",
+        "bScore": ""
+      },
+      "1-8.4": {
+        "aScore": "",
+        "bScore": ""
+      },
+      "1-4.1": {
+        "aScore": "",
+        "bScore": ""
+      },
+      "1-4.2": {
+        "aScore": "",
+        "bScore": ""
+      }
+    }
+  },
+  "EDM15": {
+    "id": "EDM15",
+    "type": "pools",
+    "shortTitle": "Épée Dames M15 (3 poules • 21 tireuses)",
+    "epreuve": "Epée - Dames - M15",
+    "tour": "Poules Tour n°1",
+    "club": "SCO ESCRIME",
+    "date": "21/11/2026",
+    "pools": [
+      {
+        "numero": "01",
+        "piste": "2",
+        "arbitre": "",
+        "fencers": [
+          {
+            "num": 1,
+            "nom": "CHAMAYOU",
+            "prenom": "Domitille",
+            "club": "AURAY ESC"
+          },
+          {
+            "num": 2,
+            "nom": "DIAKITE",
+            "prenom": "Maryam",
+            "club": "NANTES CEN"
+          },
+          {
+            "num": 3,
+            "nom": "SALMON RADENAC",
+            "prenom": "Romane",
+            "club": "LORIENT SE"
+          },
+          {
+            "num": 4,
+            "nom": "LE COURTOIS BÉZIER",
+            "prenom": "Victoire",
+            "club": "LAVAL CE"
+          },
+          {
+            "num": 5,
+            "nom": "LIOTHAUD",
+            "prenom": "Valentine",
+            "club": "ANGERS SCO"
+          },
+          {
+            "num": 6,
+            "nom": "BERNARD",
+            "prenom": "Alizee",
+            "club": "SABLES OLONN"
+          },
+          {
+            "num": 7,
+            "nom": "PONIN",
+            "prenom": "Noélia",
+            "club": "JA ST MALO"
+          }
+        ],
+        "scores": {}
+      },
+      {
+        "numero": "02",
+        "piste": "4",
+        "arbitre": "",
+        "fencers": [
+          {
+            "num": 1,
+            "nom": "SAULNIER",
+            "prenom": "Emma",
+            "club": "NANTES CEN"
+          },
+          {
+            "num": 2,
+            "nom": "GERARD",
+            "prenom": "Valentine",
+            "club": "ANGERS CSAD"
+          },
+          {
+            "num": 3,
+            "nom": "BOLLENGIER-STRAGIER",
+            "prenom": "Elise",
+            "club": "NEUVILLE 72"
+          },
+          {
+            "num": 4,
+            "nom": "EON",
+            "prenom": "Alwena",
+            "club": "JA ST MALO"
+          },
+          {
+            "num": 5,
+            "nom": "BERNARD",
+            "prenom": "Cecile",
+            "club": "RENNES CSG"
+          },
+          {
+            "num": 6,
+            "nom": "GASTE",
+            "prenom": "Clara",
+            "club": "ANGERS SCO"
+          },
+          {
+            "num": 7,
+            "nom": "VALOIS",
+            "prenom": "Isalys",
+            "club": "NIORT CE"
+          }
+        ],
+        "scores": {}
+      },
+      {
+        "numero": "03",
+        "piste": "6",
+        "arbitre": "",
+        "fencers": [
+          {
+            "num": 1,
+            "nom": "LOORIUS",
+            "prenom": "Yanna",
+            "club": "LOUDEAC"
+          },
+          {
+            "num": 2,
+            "nom": "ROCHEREAU",
+            "prenom": "Inès",
+            "club": "NANTES CEN"
+          },
+          {
+            "num": 3,
+            "nom": "MOREAU",
+            "prenom": "Mélia",
+            "club": "NEUVILLE 72"
+          },
+          {
+            "num": 4,
+            "nom": "QUENON",
+            "prenom": "Chloé",
+            "club": "JA ST MALO"
+          },
+          {
+            "num": 5,
+            "nom": "POUCH",
+            "prenom": "Zoe",
+            "club": "QUIMPER EC"
+          },
+          {
+            "num": 6,
+            "nom": "LOUSTAUNAU",
+            "prenom": "Raphaëlle",
+            "club": "ANGERS SCO"
+          },
+          {
+            "num": 7,
+            "nom": "FOULON-LIVET",
+            "prenom": "Clarisse",
+            "club": "LAVAL CE"
+          }
+        ],
+        "scores": {}
+      }
+    ]
+  },
+  "EHM15": {
+    "id": "EHM15",
+    "type": "pools",
+    "shortTitle": "Épée Hommes M15 (5 poules • 32 tireurs)",
+    "epreuve": "Epée - Hommes - M15",
+    "tour": "Poules Tour n°1",
+    "club": "SCO ESCRIME",
+    "date": "21/11/2026",
+    "pools": [
+      {
+        "numero": "01",
+        "piste": "",
+        "arbitre": "",
+        "fencers": [
+          {
+            "num": 1,
+            "nom": "ROUX",
+            "prenom": "Jean",
+            "club": ""
+          },
+          {
+            "num": 2,
+            "nom": "BILLEROT",
+            "prenom": "Axel",
+            "club": ""
+          },
+          {
+            "num": 3,
+            "nom": "FRESSANCOURT",
+            "prenom": "Matéo",
+            "club": ""
+          },
+          {
+            "num": 4,
+            "nom": "LE CALVEZ",
+            "prenom": "Paul",
+            "club": ""
+          },
+          {
+            "num": 5,
+            "nom": "FOULARD",
+            "prenom": "Yanis",
+            "club": ""
+          },
+          {
+            "num": 6,
+            "nom": "BOUREE",
+            "prenom": "Lucas",
+            "club": ""
+          },
+          {
+            "num": 7,
+            "nom": "YSTE",
+            "prenom": "Jocelyn",
+            "club": ""
+          }
+        ],
+        "scores": {}
+      },
+      {
+        "numero": "02",
+        "piste": "",
+        "arbitre": "",
+        "fencers": [
+          {
+            "num": 1,
+            "nom": "LEROY",
+            "prenom": "Malo",
+            "club": ""
+          },
+          {
+            "num": 2,
+            "nom": "ANTOUNE",
+            "prenom": "Gibran",
+            "club": ""
+          },
+          {
+            "num": 3,
+            "nom": "LE ROUX",
+            "prenom": "Lenny",
+            "club": ""
+          },
+          {
+            "num": 4,
+            "nom": "CHEVAL",
+            "prenom": "Arthur",
+            "club": ""
+          },
+          {
+            "num": 5,
+            "nom": "BENOIST DEFRADE",
+            "prenom": "Camille",
+            "club": ""
+          },
+          {
+            "num": 6,
+            "nom": "BEURY",
+            "prenom": "Maxence",
+            "club": ""
+          },
+          {
+            "num": 7,
+            "nom": "CODDEVILLE",
+            "prenom": "Robin",
+            "club": ""
+          }
+        ],
+        "scores": {}
+      },
+      {
+        "numero": "03",
+        "piste": "",
+        "arbitre": "",
+        "fencers": [
+          {
+            "num": 1,
+            "nom": "BUNNENS",
+            "prenom": "Teddy",
+            "club": ""
+          },
+          {
+            "num": 2,
+            "nom": "CHERASSE",
+            "prenom": "Amaury",
+            "club": ""
+          },
+          {
+            "num": 3,
+            "nom": "VIDAL-JAFFRE",
+            "prenom": "Aaron",
+            "club": ""
+          },
+          {
+            "num": 4,
+            "nom": "BLACHIER BECHEZ",
+            "prenom": "Augustin",
+            "club": ""
+          },
+          {
+            "num": 5,
+            "nom": "GAUTHIER",
+            "prenom": "Magnus",
+            "club": ""
+          },
+          {
+            "num": 6,
+            "nom": "LANDRON",
+            "prenom": "Rudy",
+            "club": ""
+          }
+        ],
+        "scores": {}
+      },
+      {
+        "numero": "04",
+        "piste": "",
+        "arbitre": "",
+        "fencers": [
+          {
+            "num": 1,
+            "nom": "MAILLOT",
+            "prenom": "Louis",
+            "club": ""
+          },
+          {
+            "num": 2,
+            "nom": "LE FOLL",
+            "prenom": "Noe",
+            "club": ""
+          },
+          {
+            "num": 3,
+            "nom": "ROSSI MORVAN",
+            "prenom": "Gabriel",
+            "club": ""
+          },
+          {
+            "num": 4,
+            "nom": "GOURDIN",
+            "prenom": "Arthur",
+            "club": ""
+          },
+          {
+            "num": 5,
+            "nom": "MERAND",
+            "prenom": "Louis",
+            "club": ""
+          },
+          {
+            "num": 6,
+            "nom": "MICHAUD LIPOVAC",
+            "prenom": "Oswald",
+            "club": ""
+          }
+        ],
+        "scores": {}
+      },
+      {
+        "numero": "05",
+        "piste": "",
+        "arbitre": "",
+        "fencers": [
+          {
+            "num": 1,
+            "nom": "GIRARD",
+            "prenom": "Jules",
+            "club": ""
+          },
+          {
+            "num": 2,
+            "nom": "VIMEUX",
+            "prenom": "Théo",
+            "club": ""
+          },
+          {
+            "num": 3,
+            "nom": "GUERIN",
+            "prenom": "Alexis",
+            "club": ""
+          },
+          {
+            "num": 4,
+            "nom": "DUFEIL",
+            "prenom": "Côme",
+            "club": ""
+          },
+          {
+            "num": 5,
+            "nom": "PIRON",
+            "prenom": "Raphaël",
+            "club": ""
+          },
+          {
+            "num": 6,
+            "nom": "REBY",
+            "prenom": "Adrien",
+            "club": ""
+          }
+        ],
+        "scores": {}
+      }
+    ]
+  }
+}
