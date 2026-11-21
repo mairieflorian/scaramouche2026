@@ -272,6 +272,14 @@
       "1-16.6": {
         "a": "6",
         "b": "12"
+      },
+      "1-8.1": {
+        "a": "10",
+        "b": "8"
+      },
+      "1-8.2": {
+        "a": "7",
+        "b": "10"
       }
     }
   },
@@ -623,7 +631,7 @@
       },
       "1-16.4": {
         "a": "7",
-        "b": "6"
+        "b": "10"
       },
       "1-16.7": {
         "a": "10",
@@ -648,6 +656,26 @@
       "1-16.6": {
         "a": "10",
         "b": "8"
+      },
+      "1-8.1": {
+        "a": "9",
+        "b": "10"
+      },
+      "1-8.2": {
+        "a": "9",
+        "b": "10"
+      },
+      "1-4.1": {
+        "a": "",
+        "b": ""
+      },
+      "1-8.3": {
+        "a": "8",
+        "b": "10"
+      },
+      "1-8.4": {
+        "a": "6",
+        "b": "10"
       }
     }
   },
@@ -841,34 +869,475 @@
       }
     }
   },
-  "EDM11": {
-    "id": "EDM11",
-    "active": false,
+  "EM11": {
+    "id": "EM11",
+    "active": true,
     "size": 16,
-    "tab": "Épée Dames M11",
-    "epreuve": "Epée - Dames - M11",
-    "tour": "Tableau éliminatoire",
+    "tab": "Épée Mixte M11",
+    "epreuve": "Epée - Mixte - M11",
+    "tour": "Tableau de 16",
     "club": "SCO ESCRIME",
     "date": "21/11/2026",
     "piste": "",
     "arbitre": "",
-    "seeds": {},
-    "pairs16": [],
-    "scores": {}
+    "seeds": {
+      "1": {
+        "n": 1,
+        "nom": "LAINÉ",
+        "prenom": "Louis",
+        "club": "NEUVILLE 72"
+      },
+      "2": {
+        "n": 2,
+        "nom": "LANCELOT",
+        "prenom": "Héloïse",
+        "club": "CHAT-GONTIER"
+      },
+      "3": {
+        "n": 3,
+        "nom": "METENIER PEREZ",
+        "prenom": "Mathias",
+        "club": "ANGERS CSAD"
+      },
+      "4": {
+        "n": 4,
+        "nom": "RACIC",
+        "prenom": "Madeleine",
+        "club": "ST HERBLAIN"
+      },
+      "5": {
+        "n": 5,
+        "nom": "ROSSI MORVAN",
+        "prenom": "Louis",
+        "club": "LORIENT SE"
+      },
+      "6": {
+        "n": 6,
+        "nom": "TOUCHARD",
+        "prenom": "Lucas",
+        "club": "ANGERS NDC"
+      },
+      "7": {
+        "n": 7,
+        "nom": "CHAMAYOU",
+        "prenom": "Hermance",
+        "club": "AURAY ESC"
+      },
+      "8": {
+        "n": 8,
+        "nom": "BOURDEAU PY",
+        "prenom": "Gabriel",
+        "club": "ANGERS NDC"
+      },
+      "9": {
+        "n": 9,
+        "nom": "DEGEE",
+        "prenom": "Axel",
+        "club": "CHAT-GONTIER"
+      },
+      "10": {
+        "n": 10,
+        "nom": "RAIMBERT",
+        "prenom": "Noah",
+        "club": "ANGERS CSAD"
+      },
+      "11": {
+        "n": 11,
+        "nom": "MOREUIL",
+        "prenom": "Iris",
+        "club": "NANTES CEN"
+      },
+      "12": {
+        "n": 12,
+        "nom": "DUTERTRE",
+        "prenom": "Capucine",
+        "club": "ANGERS CSAD"
+      },
+      "13": {
+        "n": 13,
+        "nom": "COTTEAU",
+        "prenom": "Henrik",
+        "club": "ANGERS CSAD"
+      },
+      "14": {
+        "n": 14,
+        "nom": "DESPLANQUES",
+        "prenom": "Arthur",
+        "club": "NEUVILLE 72"
+      }
+    },
+    "pairs16": [
+      [
+        1,
+        null,
+        "a"
+      ],
+      [
+        9,
+        8,
+        ""
+      ],
+      [
+        5,
+        12,
+        ""
+      ],
+      [
+        13,
+        4,
+        ""
+      ],
+      [
+        3,
+        14,
+        ""
+      ],
+      [
+        11,
+        6,
+        ""
+      ],
+      [
+        7,
+        10,
+        ""
+      ],
+      [
+        null,
+        2,
+        "b"
+      ]
+    ],
+    "scores": {
+      "1-16.2": {
+        "a": "7",
+        "b": "10"
+      },
+      "1-16.3": {
+        "a": "10",
+        "b": "7"
+      },
+      "1-16.4": {
+        "a": "2",
+        "b": "8"
+      },
+      "1-16.5": {
+        "a": "8",
+        "b": "0"
+      },
+      "1-16.6": {
+        "a": "4",
+        "b": "8"
+      },
+      "1-16.7": {
+        "a": "8",
+        "b": "5"
+      }
+    }
   },
-  "EHM11": {
-    "id": "EHM11",
-    "active": false,
-    "size": 16,
-    "tab": "Épée Hommes M11",
-    "epreuve": "Epée - Hommes - M11",
-    "tour": "Tableau éliminatoire",
+  "FM11": {
+    "id": "FM11",
+    "active": true,
+    "size": 32,
+    "tab": "Fleuret Mixte M11",
+    "epreuve": "Fleuret - Mixte - M11",
+    "tour": "Tableau de 32",
     "club": "SCO ESCRIME",
     "date": "21/11/2026",
     "piste": "",
     "arbitre": "",
-    "seeds": {},
-    "pairs16": [],
-    "scores": {}
+    "seeds": {
+      "1": {
+        "n": 1,
+        "nom": "MORCEL",
+        "prenom": "Nandor",
+        "club": "VALLET"
+      },
+      "2": {
+        "n": 2,
+        "nom": "ENGELSPACH",
+        "prenom": "Andie",
+        "club": "LANNIONASPTT"
+      },
+      "3": {
+        "n": 3,
+        "nom": "HERVÉ-LE BRAS",
+        "prenom": "Owen",
+        "club": "QUIMPER EC"
+      },
+      "4": {
+        "n": 4,
+        "nom": "D'ORGEVAL",
+        "prenom": "Ambroise",
+        "club": "ST GILLES EV"
+      },
+      "5": {
+        "n": 5,
+        "nom": "JABNOUNI-PORTAIS",
+        "prenom": "Constant",
+        "club": "LOUE CM"
+      },
+      "6": {
+        "n": 6,
+        "nom": "HUBY",
+        "prenom": "Malone",
+        "club": "ST GILLES EV"
+      },
+      "7": {
+        "n": 7,
+        "nom": "JONCOUR",
+        "prenom": "Yuna",
+        "club": "ANGERS SCO"
+      },
+      "8": {
+        "n": 8,
+        "nom": "LE MARCHAND",
+        "prenom": "Rozenn",
+        "club": "RENNES ERM"
+      },
+      "9": {
+        "n": 9,
+        "nom": "BRETON",
+        "prenom": "Malone",
+        "club": "SABLE SARTHE"
+      },
+      "10": {
+        "n": 10,
+        "nom": "TISON",
+        "prenom": "Martin",
+        "club": "NANTES NEC"
+      },
+      "11": {
+        "n": 11,
+        "nom": "LELIEVRE",
+        "prenom": "Malo",
+        "club": "SABLE SARTHE"
+      },
+      "12": {
+        "n": 12,
+        "nom": "BONY",
+        "prenom": "Elouan",
+        "club": "SABLE SARTHE"
+      },
+      "13": {
+        "n": 13,
+        "nom": "COOMBES",
+        "prenom": "Iris",
+        "club": "VALLET"
+      },
+      "14": {
+        "n": 14,
+        "nom": "MARAIS FERRE",
+        "prenom": "Lyam",
+        "club": "SABLES OLONN"
+      },
+      "15": {
+        "n": 15,
+        "nom": "SORIN",
+        "prenom": "Lucien",
+        "club": "ST GILLES EV"
+      },
+      "16": {
+        "n": 16,
+        "nom": "AGUER",
+        "prenom": "Flavie",
+        "club": "VALLET"
+      },
+      "17": {
+        "n": 17,
+        "nom": "ACHKAR DE LA BASSETIÈRE",
+        "prenom": "Sixtine",
+        "club": "ANGERS SCO"
+      },
+      "18": {
+        "n": 18,
+        "nom": "PERRET",
+        "prenom": "Soan",
+        "club": "VALLET"
+      },
+      "19": {
+        "n": 19,
+        "nom": "TILLIE",
+        "prenom": "Etienne",
+        "club": "SABLE SARTHE"
+      },
+      "20": {
+        "n": 20,
+        "nom": "TILLIE",
+        "prenom": "Grégoire",
+        "club": "SABLE SARTHE"
+      },
+      "21": {
+        "n": 21,
+        "nom": "MILLE",
+        "prenom": "Alexis",
+        "club": "LOUE CM"
+      },
+      "22": {
+        "n": 22,
+        "nom": "GUÉRIN",
+        "prenom": "Jeanne",
+        "club": "MEUNG LOIRE"
+      },
+      "23": {
+        "n": 23,
+        "nom": "YAHYA BEY",
+        "prenom": "Ryad",
+        "club": "SABLES OLONN"
+      },
+      "24": {
+        "n": 24,
+        "nom": "RAPIN FORNASIER",
+        "prenom": "Athénaïs",
+        "club": "ANGERS SCO",
+        "photo": "data:image/jpeg;base64,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"
+      },
+      "25": {
+        "n": 25,
+        "nom": "LEFORT",
+        "prenom": "Madina",
+        "club": "VALLET"
+      },
+      "26": {
+        "n": 26,
+        "nom": "SOURINTHA",
+        "prenom": "Maé",
+        "club": "VALLET"
+      },
+      "27": {
+        "n": 27,
+        "nom": "MOALIC",
+        "prenom": "Bae",
+        "club": "VALLET"
+      }
+    },
+    "pairs32": [
+      [
+        1,
+        null,
+        "a"
+      ],
+      [
+        17,
+        16,
+        ""
+      ],
+      [
+        9,
+        24,
+        ""
+      ],
+      [
+        25,
+        8,
+        ""
+      ],
+      [
+        5,
+        null,
+        "a"
+      ],
+      [
+        21,
+        12,
+        ""
+      ],
+      [
+        13,
+        20,
+        ""
+      ],
+      [
+        null,
+        4,
+        "b"
+      ],
+      [
+        3,
+        null,
+        "a"
+      ],
+      [
+        19,
+        14,
+        ""
+      ],
+      [
+        11,
+        22,
+        ""
+      ],
+      [
+        27,
+        6,
+        ""
+      ],
+      [
+        7,
+        26,
+        ""
+      ],
+      [
+        23,
+        10,
+        ""
+      ],
+      [
+        15,
+        18,
+        ""
+      ],
+      [
+        null,
+        2,
+        "b"
+      ]
+    ],
+    "scores": {
+      "1-32.3": {
+        "a": "5",
+        "b": "8"
+      },
+      "1-32.15": {
+        "a": "4",
+        "b": "10"
+      },
+      "1-32.6": {
+        "a": "1",
+        "b": "8"
+      },
+      "1-32.7": {
+        "a": "8",
+        "b": "3"
+      },
+      "1-32.2": {
+        "a": "1",
+        "b": "8"
+      },
+      "1-32.4": {
+        "a": "2",
+        "b": "8"
+      },
+      "1-32.10": {
+        "a": "8",
+        "b": "3"
+      },
+      "1-32.11": {
+        "a": "8",
+        "b": "1"
+      },
+      "1-32.14": {
+        "a": "8",
+        "b": "7"
+      },
+      "1-32.12": {
+        "a": "0",
+        "b": "8"
+      },
+      "1-32.13": {
+        "a": "8",
+        "b": "2"
+      }
+    }
   }
 }
