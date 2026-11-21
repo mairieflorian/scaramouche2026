@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scaramouche 2026 — Tableaux Éliminatoires</title>
+  <style>
+    :root {
+      --bg: #eef2f6;
+      --paper: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: #1e293b;
+      --grid: #cbd5e1;
+      --accent: #0f766e;
+      --accent-soft: #f0fdfa;
+      --win: #dcfce7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.4;
+    }
+
+    .app-header {
+      background: var(--ink);
+      color: #ffffff;
+      padding: 16px;
+      border-bottom: 4px solid var(--accent);
+    }
+
+    .container {
+      max-width: 1360px;
+      margin: 0 auto;
+    }
+
+    .header-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .kicker {
+      font-size: 11.5px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #5eead4;
+    }
+
+    .app-title {
+      font-size: 21px;
+      font-weight: 800;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .mode-badge {
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .mode-badge.viewer {
+      background: rgba(148, 163, 184, 0.22);
+      color: #e2e8f0;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+    }
+
+    .mode-badge.editor {
+      background: rgba(20, 184, 166, 0.25);
+      color: #5eead4;
+      border: 1px solid #2dd4bf;
+    }
+
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 7px 12px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.18);
+    }
+
+    .btn-unlock {
+      background: #0d9488;
+      border-color: #2dd4bf;
+      color: #ffffff;
+    }
+
+    .event-bar {
+      background: #1e293b;
+      padding: 10px 16px;
+    }
+
+    .event-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .event-btn {
+      padding: 8px 16px;
+      border-radius: 7px;
+      border: 1.5px solid #475569;
+      background: #0f172a;
+      color: #cbd5e1;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .event-btn.active {
+      background: #14b8a6;
+      color: #042f2e;
+      border-color: #14b8a6;
+    }
+
+    .sub-bar {
+      background: var(--paper);
+      border-bottom: 1.5px solid var(--grid);
+      padding: 10px 16px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .sub-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .pill-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: 1.5px solid var(--line);
+      background: #f8fafc;
+      color: var(--ink);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .pill-btn.active {
+      background: var(--ink);
+      color: #ffffff;
+    }
+
+    .search-input {
+      padding: 7px 12px;
+      border: 1.5px solid #94a3b8;
+      border-radius: 6px;
+      font-size: 13px;
+      min-width: 230px;
+    }
+
+    main {
+      padding: 20px 16px 48px;
+    }
+
+    .sheet {
+      background: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: 6px;
+      padding: 16px;
+    }
+
+    .sheet-header {
+      display: grid;
+      grid-template-columns: 1.2fr 1.5fr 1fr;
+      border: 1.5px solid var(--line);
+      margin-bottom: 14px;
+    }
+
+    .h-box {
+      padding: 10px 12px;
+      border-right: 1.5px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+    }
+
+    .h-box:last-child {
+      border-right: none;
+    }
+
+    .pool-heading {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .inline-field {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .inline-field input {
+      border: 1px solid #94a3b8;
+      border-radius: 4px;
+      padding: 3px 7px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink);
+      background: #f8fafc;
+    }
+
+    .inline-field input:disabled {
+      background: #f1f5f9;
+      border-color: transparent;
+    }
+
+    .inline-field input.piste-input {
+      width: 56px;
+      text-align: center;
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .event-center-title {
+      font-size: 16px;
+      font-weight: 800;
+      text-align: center;
+    }
+
+    .event-center-sub {
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .right-meta {
+      text-align: right;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .right-date {
+      text-align: right;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .bouts-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .bouts-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .bouts-hint {
+      font-size: 11.5px;
+      color: var(--muted);
+    }
+
+    .bracket-scroll {
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .bracket-board-4 {
+      min-width: 1020px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .round-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .round-header {
+      background: var(--ink);
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 7px 8px;
+      border-radius: 5px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .round-matches {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      gap: 8px;
+    }
+
+    .de-match {
+      border: 1.5px solid var(--line);
+      border-radius: 5px;
+      background: #f8fafc;
+      overflow: hidden;
+    }
+
+    .de-match-top {
+      background: #e2e8f0;
+      padding: 2px 7px;
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .de-slot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 5px;
+      padding: 5px 7px;
+      background: #ffffff;
+      border-top: 1px solid #cbd5e1;
+      font-size: 11.5px;
+    }
+
+    .de-slot.winner-slot {
+      background: var(--win);
+    }
+
+    .de-slot.bye-slot {
+      background: #f8fafc;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .row-highlight {
+      background: #fef9c3 !important;
+    }
+
+    .de-fencer {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .de-seed {
+      font-weight: 800;
+      color: var(--muted);
+      margin-right: 3px;
+    }
+
+    .de-name {
+      font-weight: 800;
+    }
+
+    .de-club {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .de-score-input {
+      width: 40px;
+      height: 22px;
+      text-align: center;
+      border: 1.5px solid #64748b;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 11.5px;
+      background: #ffffff;
+    }
+
+    .de-score-read {
+      min-width: 22px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 11.5px;
+    }
+
+    .champion-box {
+      border: 2px solid var(--accent);
+      background: var(--accent-soft);
+      border-radius: 6px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .champion-label {
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .champion-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .champion-club {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table.rank-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    table.rank-table th,
+    table.rank-table td {
+      border: 1px solid var(--grid);
+      padding: 8px 10px;
+    }
+
+    table.rank-table th {
+      background: #f1f5f9;
+      text-align: left;
+      font-size: 11.5px;
+      text-transform: uppercase;
+    }
+
+    table.rank-table td.num,
+    table.rank-table th.num {
+      text-align: center;
+    }
+
+    @media (max-width: 740px) {
+      .sheet-header {
+        grid-template-columns: 1fr;
+      }
+      .h-box {
+        border-right: none;
+        border-bottom: 1.5px solid var(--line);
+      }
+      .h-box:last-child {
+        border-bottom: none;
+      }
+      .right-meta,
+      .right-date {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="container header-row">
+      <div>
+        <div class="kicker">scaramouche2026 • SCO ESCRIME • 21/11/2026</div>
+        <div class="app-title">Scaramouche 2026 — Tableaux Éliminatoires</div>
+      </div>
+      <div class="header-actions" id="headerActions"></div>
+    </div>
+  </header>
+
+  <div class="event-bar">
+    <div class="container event-tabs" id="eventTabs"></div>
+  </div>
+
+  <div class="sub-bar">
+    <div class="container sub-row">
+      <div class="filter-pills" id="filterPills"></div>
+      <input
+        type="text"
+        id="searchInput"
+        class="search-input"
+        placeholder="Rechercher tireur/tireuse ou club..."
+      />
+    </div>
+  </div>
+
+  <main>
+    <div class="container" id="mainContent"></div>
+  </main>
+
+  <script>
+    const EDITOR_PIN = "2026";
+    const EVENT_ORDER = ["EHM15_T32", "EDM15_T32", "FDM15_T16", "EDM11_T16", "EHM11_T16"];
+
+    const INITIAL_DATA = {
+      EHM15_T32: {
+        id: "EHM15_T32",
+        enabled: true,
+        bracketSize: 32,
+        shortTitle: "Épée Hommes M15",
+        epreuve: "Epée - Hommes - M15",
+        tour: "Tableau de 32",
+        club: "SCO ESCRIME",
+        date: "21/11/2026",
+        piste: "",
+        arbitre: "",
+        seeds: {
+          1: { seed: 1, nom: "BUNNENS", prenom: "Teddy", club: "ANGERS SCO" },
+          2: { seed: 2, nom: "REBY", prenom: "Adrien", club: "VALLET" },
+          3: { seed: 3, nom: "LE ROUX", prenom: "Lenny", club: "VALLET" },
+          4: { seed: 4, nom: "BENOIST DEFRADE", prenom: "Camille", club: "LORIENT SE" },
+          5: { seed: 5, nom: "BLACHIER BECHEZ", prenom: "Augustin", club: "VALLET" },
+          6: { seed: 6, nom: "MAILLOT", prenom: "Louis", club: "ANGERS CSAD" },
+          7: { seed: 7, nom: "VIMEUX", prenom: "Théo", club: "JA ST MALO" },
+          8: { seed: 8, nom: "BILLEROT", prenom: "Axel", club: "NIORT CE" },
+          9: { seed: 9, nom: "LE CALVEZ", prenom: "Paul", club: "RENNES CSG" },
+          10: { seed: 10, nom: "ANTOUNE", prenom: "Gibran", club: "NEUVILLE 72" },
+          11: { seed: 11, nom: "FOULARD", prenom: "Yanis", club: "NEUVILLE 72" },
+          12: { seed: 12, nom: "ROSSI MORVAN", prenom: "Gabriel", club: "LORIENT SE" },
+          13: { seed: 13, nom: "LANDRON", prenom: "Rudy", club: "ANGERS CSAD" },
+          14: { seed: 14, nom: "MERAND", prenom: "Louis", club: "LA FLECHE" },
+          15: { seed: 15, nom: "ROUX", prenom: "Jean", club: "JA ST MALO" },
+          16: { seed: 16, nom: "BOUREE", prenom: "Lucas", club: "JA ST MALO" },
+          17: { seed: 17, nom: "CHEVAL", prenom: "Arthur", club: "ANGERS CSAD" },
+          18: { seed: 18, nom: "LE FOLL", prenom: "Noe", club: "NANTES CEN" },
+          19: { seed: 19, nom: "VIDAL-JAFFRE", prenom: "Aaron", club: "LORIENT SE" },
+          20: { seed: 20, nom: "GOURDIN", prenom: "Arthur", club: "JA ST MALO" },
+          21: { seed: 21, nom: "CODDEVILLE", prenom: "Robin", club: "JA ST MALO" },
+          22: { seed: 22, nom: "FRESSANCOURT", prenom: "Matéo", club: "ANGERS SCO" },
+          23: { seed: 23, nom: "DUFEIL", prenom: "Côme", club: "JA ST MALO" },
+          24: { seed: 24, nom: "PIRON", prenom: "Raphaël", club: "ST DOULCHARD" },
+          25: { seed: 25, nom: "GIRARD", prenom: "Jules", club: "ANGERS SCO" },
+          26: { seed: 26, nom: "MICHAUD LIPOVAC", prenom: "Oswald", club: "JA ST MALO" },
+          27: { seed: 27, nom: "GAUTHIER", prenom: "Magnus", club: "VENDOME" },
+          28: { seed: 28, nom: "LEROY", prenom: "Malo", club: "SABLE SARTHE" },
+          29: { seed: 29, nom: "YSTE", prenom: "Jocelyn", club: "LORIENT SE" },
+          30: { seed: 30, nom: "BEURY", prenom: "Maxence", club: "LA FLECHE" },
+          31: { seed: 31, nom: "CHERASSE", prenom: "Amaury", club: "JA ST MALO" }
+        },
+        t32Seeds: [
+          [1, null, "a"], [17, 16, ""], [9, 24, ""], [25, 8, ""],
+          [5, 28, ""], [21, 12, ""], [13, 20, ""], [29, 4, ""],
+          [3
