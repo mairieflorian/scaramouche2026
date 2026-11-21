@@ -12,7 +12,7 @@
       color: #0f172a;
       line-height: 1.4;
     }
-    .container { max-width: 1360px; margin: 0 auto; }
+    .container { max-width: 1380px; margin: 0 auto; }
     header {
       background: #0f172a;
       color: #fff;
@@ -450,7 +450,10 @@
     }
 
     function fetchPublishedJson(showMsg) {
-      if (typeof fetch !== "function") return;
+      if (window.location.protocol === "file:" || typeof fetch !== "function") {
+        if (showMsg) alert("Le chargement automatique en ligne fonctionne via GitHub / Vercel.");
+        return;
+      }
       fetch("./resultats.json?t=" + Date.now(), { cache: "no-store" })
         .then(res => {
           if (!res.ok) {
@@ -503,7 +506,68 @@
 
     function buildRound(pairs, prefix, seeds, scores) {
       return pairs.map(([rawA, rawB, bye], i) => {
-        const key = `${prefix}.${i + 1}`; const fA = typeof rawA === "number" ? seeds[rawA] : (rawA \vert{}\vert{} null); const fB = typeof rawB === "number" ? seeds[rawB] : (rawB \vert{}\vert{} null); const sc = scores[key] \vert{}\vert{} { a: "", b: "" }; const win = winnerOf(fA, fB, sc.a, sc.b, bye \vert{}\vert{} ""); return { key, fA, fB, a: sc.a ?? "", b: sc.b ?? "", win, bye: bye \vert{}\vert{} "" }; }); }  function getRounds(ev) { if (ev.size === 32) { const r32 = buildRound(ev.pairs32, "1-32", ev.seeds, ev.scores); const p16 = []; for (let i = 0; i < 16; i += 2) p16.push([r32[i].win, r32[i + 1].win, ""]); const r16 = buildRound(p16, "1-16", ev.seeds, ev.scores); const p8 = []; for (let i = 0; i < 8; i += 2) p8.push([r16[i].win, r16[i + 1].win, ""]); const r8 = buildRound(p8, "1-8", ev.seeds, ev.scores); const p4 = []; for (let i = 0; i < 4; i += 2) p4.push([r8[i].win, r8[i + 1].win, ""]); const r4 = buildRound(p4, "1-4", ev.seeds, ev.scores); return { cols: [ { title: "Tableau de 32", matches: r32 }, { title: "Tableau de 16", matches: r16 }, { title: "Tableau de 8", matches: r8 } ], qualTitle: "Qualifiés Demi-finale", qualList: r4.map(m => m.win).filter(Boolean), qualCount: 4, qualLabel: "Demi-finaliste" }; }  const r16 = buildRound(ev.pairs16, "1-16", ev.seeds, ev.scores); const r8 = buildRound([ [r16[0].win, r16[1].win, ""], [r16[2].win, r16[3].win, ""], [r16[4].win, r16[5].win, ""], [r16[6].win, r16[7].win, ""] ], "1-8", ev.seeds, ev.scores); const r4 = buildRound([ [r8[0].win, r8[1].win, ""], [r8[2].win, r8[3].win, ""] ], "1-4", ev.seeds, ev.scores);  return { cols: [ { title: "Tableau de 16", matches: r16 }, { title: "Tableau de 8", matches: r8 }, { title: "Demi-finale", matches: r4 } ], qualTitle: "Qualifiées Finale", qualList: r4.map(m => m.win).filter(Boolean), qualCount: 2, qualLabel: "Finaliste" }; }  function isHit(f, q) { if (!q \vert{}\vert{} !f) return false; return `${f.nom} ${f.prenom}${f.club}`.toLowerCase().includes(q);
+        const key = `${prefix}.${i + 1}`;
+        const fA = typeof rawA === "number" ? seeds[rawA] : (rawA || null);
+        const fB = typeof rawB === "number" ? seeds[rawB] : (rawB || null);
+        const sc = scores[key] || { a: "", b: "" };
+        const win = winnerOf(fA, fB, sc.a, sc.b, bye || "");
+        return { key, fA, fB, a: sc.a ?? "", b: sc.b ?? "", win, bye: bye || "" };
+      });
+    }
+
+    function getRounds(ev) {
+      if (ev.size === 32) {
+        const r32 = buildRound(ev.pairs32, "1-32", ev.seeds, ev.scores);
+        const p16 = [];
+        for (let i = 0; i < 16; i += 2) p16.push([r32[i].win, r32[i + 1].win, ""]);
+        const r16 = buildRound(p16, "1-16", ev.seeds, ev.scores);
+        const p8 = [];
+        for (let i = 0; i < 8; i += 2) p8.push([r16[i].win, r16[i + 1].win, ""]);
+        const r8 = buildRound(p8, "1-8", ev.seeds, ev.scores);
+        const p4 = [];
+        for (let i = 0; i < 4; i += 2) p4.push([r8[i].win, r8[i + 1].win, ""]);
+        const r4 = buildRound(p4, "1-4", ev.seeds, ev.scores);
+        return {
+          cols: [
+            { title: "Tableau de 32", matches: r32 },
+            { title: "Tableau de 16", matches: r16 },
+            { title: "Tableau de 8", matches: r8 }
+          ],
+          qualTitle: "Qualifiés Demi-finale",
+          qualList: r4.map(m => m.win).filter(Boolean),
+          qualCount: 4,
+          qualLabel: "Demi-finaliste"
+        };
+      }
+
+      const r16 = buildRound(ev.pairs16, "1-16", ev.seeds, ev.scores);
+      const r8 = buildRound([
+        [r16[0].win, r16[1].win, ""],
+        [r16[2].win, r16[3].win, ""],
+        [r16[4].win, r16[5].win, ""],
+        [r16[6].win, r16[7].win, ""]
+      ], "1-8", ev.seeds, ev.scores);
+      const r4 = buildRound([
+        [r8[0].win, r8[1].win, ""],
+        [r8[2].win, r8[3].win, ""]
+      ], "1-4", ev.seeds, ev.scores);
+
+      return {
+        cols: [
+          { title: "Tableau de 16", matches: r16 },
+          { title: "Tableau de 8", matches: r8 },
+          { title: "Demi-finale", matches: r4 }
+        ],
+        qualTitle: "Qualifiées Finale",
+        qualList: r4.map(m => m.win).filter(Boolean),
+        qualCount: 2,
+        qualLabel: "Finaliste"
+      };
+    }
+
+    function isHit(f, q) {
+      if (!q || !f) return false;
+      return `${f.nom} ${f.prenom} ${f.club}`.toLowerCase().includes(q);
     }
 
     function renderActions() {
@@ -554,7 +618,7 @@
       return `
         <div class="slot ${isWin ? "win" : ""} ${hit ? "hit" : ""}">
           <div>
-            <span class="fencer-name">${f.n}. ${f.nom}${f.prenom}</span>
+            <span class="fencer-name">${f.n}. ${f.nom} ${f.prenom}</span>
             <span class="fencer-club">${f.club}</span>
           </div>
           ${ctrl}
@@ -616,7 +680,7 @@
               return `
                 <div class="qual-card">
                   <div class="qual-lbl">${qualLabel} ${idx + 1}</div>
-                  ${f ? `<div class="qual-name">${f.n}. ${f.nom}${f.prenom}</div><div class="qual-club">${f.club}</div>` : `<div class="qual-club">À déterminer</div>`}
+                  ${f ? `<div class="qual-name">${f.n}. ${f.nom} ${f.prenom}</div><div class="qual-club">${f.club}</div>` : `<div class="qual-club">À déterminer</div>`}
                 </div>
               `;
             }).join("")}
@@ -638,4 +702,93 @@
             </div>
             <div class="box">
               <div class="right-club">${ev.club}</div>
-              <div class="right-date
+              <div class="right-date">${ev.date}</div>
+            </div>
+          </div>
+          <div class="scroll"><div class="board">${colsHtml}${qualHtml}</div></div>
+        </article>
+      `;
+    }
+
+    function switchTab(id) {
+      if (!DATA[id] || !DATA[id].active) return;
+      currentTab = id;
+      currentView = "bracket";
+      renderAll();
+    }
+
+    function switchView(v) {
+      currentView = v;
+      renderSub();
+      renderContent();
+    }
+
+    function onSearch(v) {
+      queryText = v;
+      renderContent();
+    }
+
+    function setScore(matchKey, side, val) {
+      if (!editorUnlocked) return;
+      const ev = DATA[currentTab];
+      if (!ev.scores[matchKey]) ev.scores[matchKey] = { a: "", b: "" };
+      ev.scores[matchKey][side] = val;
+      const prevId = document.activeElement ? document.activeElement.id : "";
+      renderContent();
+      if (prevId) {
+        const el = document.getElementById(prevId);
+        if (el) el.focus();
+      }
+    }
+
+    function exportJson() {
+      const blob = new Blob([JSON.stringify(DATA, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "resultats.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importJson(e) {
+      if (!editorUnlocked) return;
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = evt => {
+        try {
+          const parsed = JSON.parse(evt.target.result);
+          if (applyImportedObject(parsed)) {
+            renderAll();
+            alert("Résultats importés avec succès.");
+          } else {
+            alert("Format de fichier JSON non reconnu.");
+          }
+        } catch {
+          alert("Fichier JSON invalide.");
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = "";
+    }
+
+    function renderAll() {
+      renderActions();
+      renderTabs();
+      renderSub();
+      renderContent();
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", function () {
+        renderAll();
+        fetchPublishedJson(false);
+      });
+    } else {
+      renderAll();
+      fetchPublishedJson(false);
+    }
+  </script>
+</body>
+</html>
